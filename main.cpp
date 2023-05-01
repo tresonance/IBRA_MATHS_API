@@ -172,7 +172,7 @@ int main(){
 
     // #  SET TOP MENU TITLE (Because we cannot set it from GIT_ONLY_BOARD_GPU)   # //
  
-sc.tm.leconTitle.setString(  "EQ PARAM PLAN" );
+sc.tm.leconTitle.setString(  "EQ PARAM DROITE" );
 
     /*  UPDATE  ONLY_BOARD THE LEFT MENU CONTAINER COLORS(border and background) */
     //sc.lm.container.setFillColor(SCREEN_BACKGROUND_COLOR(EXTERN_BACKGROUND_CHOSEN_COLOR));
