@@ -1,4 +1,4 @@
-#### [STEP 4 / 4 the extern part]
+#### [STEP 4 / 4 : Maths the extern part]
 #### ************************************************
 ####
 #### ~/COURSES/API_MATHS or MY_CHANNELS_MATHS
@@ -16,6 +16,7 @@ called ext-geometry.cpp and ext-geometry.hpp
 INFO: 
 You can do your additive staff inside those geometry files.
 Please, do not change the geometry files name.
+
 ```
 ###### HOW TO RUN ?
 
@@ -36,7 +37,14 @@ open media/videos/path/to/mp4/files
 
 	source run.sh save
 
-It will save the new generated scene, which lies inside shared directory called media (shared directory between host and docker, because here MANIM runs his script inside docker)
+It will save the new generated scene, which lies inside shared directory called media 
+(shared directory between host and docker, because here MANIM runs his script inside docker)
+into DiskE and at the same time 
+export the DiskE path (Exemple export VOLUME_VIDEOS_PHYSICS_PATH=/Volumes/DiskE/VIDEOS-Tle-Physics-mp4/dynamic/) into 
+~/.bashrc file (because if we export simply, the variable will be lost after)
+
+So, while running c++, it will load dynamically all mp4 files  from thate expoted variable.
+No need to set manually , mp4 files names (as in old days)
 ```
 
 ```

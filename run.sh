@@ -90,9 +90,9 @@ then
         MANIM_VIDEOS_BASE_PATH="$(pwd)/media/videos"
         # Export current DiskE file path permanently so that c++ will load all his mp4 files
         # Before doing that, remove the export from ~/.bashrc (if not we will have multiple line each time we run)
-        sed -i'.bak' '/VIDEOS/d' ~/.bashrc > /dev/null
+        sed -i'.bak' '/VOLUME_VIDEOS_MATHS_PATH/d' ~/.bashrc > /dev/null
         # Now add the new one 
-        echo "export VOLUME_VIDEOS_PATH=${VOLUME_VIDEOS_PATH}" >> ~/.bashrc
+        echo "export VOLUME_VIDEOS_MATHS_PATH=${VOLUME_VIDEOS_PATH}" >> ~/.bashrc
         
         #MP4_FILES_BASE_NAME=$(find ${MANIM_VIDEOS_BASE_PATH} -type f -name "[a-zA-Z]*.mp4" | while read line; do basename $line ;done )
         MP4_FILES_ABSOLUTE_NAME=$(find ${MANIM_VIDEOS_BASE_PATH} -type f -name "[a-zA-Z]*.mp4" )

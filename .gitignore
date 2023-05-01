@@ -17,6 +17,7 @@ main.cpp-e
 video-course-geometry
 board-gpu-bin
 deleteme
+media
 ONLY_MATHS
 ONLY_PHYSICS
 ONLY_CHEMISTRY
@@ -44,3 +45,4 @@ ONLY_BOARD_MATHS/
 Tle 
 1ere
 video-course-channels-generic-bin
+video-course-channels-maths-bin
