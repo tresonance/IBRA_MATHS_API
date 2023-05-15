@@ -444,11 +444,12 @@ sc.tm.leconTitle.setString(  "EQ PARAM DROITE" );
         if ( (sc.bm.currentRenderWindowNumber == 0) && PLAY_MUSIC_SFE_MOVIES_VIDEO && anim_movies.stop_playing && IS_MUSIC_PLAYING)
             mymusic.movie.play();
         
-       if (sc.bm.currentRenderWindowNumber == 0)
-            sc.currentRenderWindow->clear(SCREEN_BACKGROUND_COLOR(EXTERN_BACKGROUND_CHOSEN_COLOR));
-       else 
-            sc.currentRenderWindow->clear( WHITE );
+       //if (sc.bm.currentRenderWindowNumber == 0)
+        //    sc.currentRenderWindow->clear(SCREEN_BACKGROUND_COLOR(EXTERN_BACKGROUND_CHOSEN_COLOR));
+       //else 
+       sc.currentRenderWindow->clear( sc.tm.domainTitle.getOutlineColor() );
 
+        //Draw mp4 videos only for the first video 
         if ( (sc.bm.currentRenderWindowNumber == 0) && SHOW_ANIMATED_SFE_MOVIES_VIDEO ){ //Play mp4 video only for the first scren window
             sc.currentRenderWindow->draw(anim_movies.movie);
             sc.currentRenderWindow->draw(anim_movies.numberVideo);

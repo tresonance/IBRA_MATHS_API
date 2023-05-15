@@ -21,6 +21,15 @@ Please, do not change the geometry files name.
 ###### HOW TO RUN ?
 
 #### =|=> MANIM DIRECTORY
+```
+Please, set these Macro used by the following class in board-ext-geometry.hpp
+- the extern background color: 
+	#define EXTERN_BACKGROUND_CHOSEN_COLOR BLACK
+	#define EXTERN_MENU_SHAPE_COLOR BLACK 
+	#define EXTERN_SCREEN_STROKE_COLOR WHITE
+
+
+```
 
 ```
 1- build your manim scene : 
