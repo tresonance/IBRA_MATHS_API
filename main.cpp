@@ -145,7 +145,7 @@ int main(){
     sf::Font font;
     font.loadFromFile("./MY_CHANELS_GENERIC_SYMLINK/ONLY_BOARD_SYMLINK/MY_FONTS/arial.ttf");
 
-    sf::Text result("abc: ", font, 16);
+    sf::Text result("----[Run Result]---- :\n", font, 16);
     result.setPosition(100, 250);
     result.setFillColor(sf::Color::Green);
 
@@ -295,114 +295,116 @@ sc.tm.leconTitle.setString(  "EQ PARAM DROITE" );
                         ChildsRenderWindows[2]->close();
                         ChildsRenderWindows[3]->close();*/
                     } //Escape = close window
-                    else if( event.key.code == sf::Keyboard::Backspace ){  } //TODO: for  cleaning backwaed text entered
-                    else if( (event.key.code == sf::Keyboard::Return) || (event.key.code == sf::Keyboard::Enter) ){
-                        if(strlen(inputCodeFromTexEnteredBuffer)){inputCodeFromTexEnteredBuffer[strlen(inputCodeFromTexEnteredBuffer)] = '\n';}
-                    } //TODO: to validate text entered
-                    else if ( SHOW_ANIMATED_SFE_MOVIES_VIDEO ){ //IF we must show video
-                        
-                        if(event.key.code == sf::Keyboard::Space) { //Space = PAUSE
-                            if (anim_movies.movie.getStatus() == sfe::Playing){ //If  video is already playing, pause it
-                                anim_movies.movie.pause();
-                                if (mymusic.movie.getStatus() == sfe::Playing){//If  music is already playing, pause it
-                                  mymusic.movie.pause();
-                                }
-                            }
-                            else{
-                                anim_movies.stop_playing = true;
-                                anim_movies.movie.play();
-                                if ( (mymusic.movie.getStatus() == sfe::Stopped) ||  (mymusic.movie.getStatus() == sfe::Paused) ){
-                                     mymusic.movie.play();
-                                }
-                            }
-                            IS_MUSIC_PLAYING = !IS_MUSIC_PLAYING; //Music boolean (to play or pause)
+                    else if (!sc.IS_IMGUI_EDITOR_WINDOW_HOVERED_OR_CLICKED[sc.bm.currentRenderWindowNumber])
+                    {
+                        if( event.key.code == sf::Keyboard::Backspace ){  } //TODO: for  cleaning backwaed text entered
+                        else if( (event.key.code == sf::Keyboard::Return) || (event.key.code == sf::Keyboard::Enter) ){
+                            if(strlen(inputCodeFromTexEnteredBuffer)){inputCodeFromTexEnteredBuffer[strlen(inputCodeFromTexEnteredBuffer)] = '\n';}
+                        } //TODO: to validate text entered
+                        else if ( SHOW_ANIMATED_SFE_MOVIES_VIDEO ){ //IF we must show video
                             
-                        }
-                        else if (event.key.code == sf::Keyboard::A ) {
-                            if (event.key.alt){selector_audio->selectNextStream(sfe::Audio);}//Cause segmentation fault
-                        }
-                        else if (event.key.code == sf::Keyboard::P ) { //Volume +
-                            if (event.key.alt){ mymusic.movie.setVolume( std::min(mymusic.movie.getVolume() + KEYPRESS_VOLUME_TO_ADD, (float)MUSIC_MAX_VOLUME));}
-                        }
-                         else if (event.key.code == sf::Keyboard::M ) { //Volume -
-                            if (event.key.alt){mymusic.movie.setVolume( std::max( mymusic.movie.getVolume() - KEYPRESS_VOLUME_TO_ADD, (float)MUSIC_MIN_VOLUME));}
-                        }
-                        else if (event.key.code == sf::Keyboard::R ) { //Reset ALL so restart again
-
-                            anim_movies.movie.stop();
-                            anim_movies.movie.fit(sf::FloatRect(0.5f*(WIDTH - anim_movies.VIDEO_INITIAL_WIDTH), 0.5f*(HEIGHT - anim_movies.VIDEO_INITIAL_HEIGHT), SUBDIVISE_SCREEN_WIDTH_FACTOR_FOR_MOVIES * anim_movies.VIDEO_INITIAL_WIDTH, SUBDIVISE_SCREEN_HEIGHT_FACTOR_FOR_MOVIES * anim_movies.VIDEO_INITIAL_HEIGHT));
-                            anim_movies.movie.play();
-
-                            mymusic.movie.stop();
-                            mymusic.movie.play();
-                        }
-                        else if(event.key.code == sf::Keyboard::F ) { // Toggle Full Screen Mode
-                            anim_movies.fullscreen = !anim_movies.fullscreen;
-                            if (anim_movies.fullscreen){sc.currentRenderWindow->create(anim_movies.desktopMode, "Fullscreen mode Activated", sf::Style::Fullscreen);}
-                            else{
-                                sc.currentRenderWindow->create(sf::VideoMode(anim_movies.width, anim_movies.height), "sfeMovie Player",
-                                          sf::Style::Close | sf::Style::Resize);}
-                        
-                            sc.currentRenderWindow->setFramerateLimit(WINDOW_FRAME_LIMIT_60);
-                            sc.currentRenderWindow->setVerticalSyncEnabled(true);
-                            //Update timelime Postion
-                            ui->m_background.setPosition(kHorizontalMargin, sc.currentRenderWindow->getSize().y - kTimelineBackgroundHeight - kVerticalMargin);
-                            //Set video size and position
-                            anim_movies.movie.fit(0.5*(WIDTH - (float)sc.currentRenderWindow->getSize().x), 0.5*(HEIGHT - (float)sc.currentRenderWindow->getSize().y ), (float)sc.currentRenderWindow->getSize().x, (float)sc.currentRenderWindow->getSize().y);
-                            ui->applyProperties(); 
-                        }//else if 
-                        else if(event.key.code == sf::Keyboard::H ) {  ui->toggleVisible();}//Toggle HIDE/SHOW TumeLine
-                        else if(event.key.code == sf::Keyboard::I ) {  displayMediaInfo(anim_movies.movie, mymusic.movie );}//I stand for Info, so display Media Info
-                        else if(event.key.code == sf::Keyboard::S ) { //S tand for Stop
-                            //if (event.key.alt){selector_video->selectNextStream(sfe::Subtitle);}
-                            anim_movies.stop_playing = false;
-                            anim_movies.movie.stop();
-                            mymusic.movie.stop();
-                           
-                           
-                        }//else if sf::Keyboard::S
-                        else if( (event.key.code == sf::Keyboard::Right) && SHOW_ANIMATED_SFE_MOVIES_VIDEO  ) { //Forward or backward
-                            // FOR VIDEO
-                            anim_movies.movie.pause();
-                            sf::Time targetTime =  anim_movies.movie.getPlayingOffset() + sf::seconds(VIDEO_NUMBER_SECOND_TO_JUMP) ;
-                            anim_movies.movie.setPlayingOffset( targetTime.asSeconds() > anim_movies.movie.getDuration().asSeconds() ? anim_movies.movie.getDuration() : targetTime  );
-                            // FOR AUDIO
-                            mymusic.movie.pause();
-                            targetTime =  anim_movies.movie.getPlayingOffset();
-                            mymusic.movie.setPlayingOffset( targetTime.asSeconds() > mymusic.movie.getDuration().asSeconds() ? mymusic.movie.getDuration() : targetTime  );
-                            //Update strokes on the screen
-                            sc.update_stroke_inside_screen(targetTime);
-                        } //else if sf::Keyboard::Right
-                        else if ( (event.key.code == sf::Keyboard::Left) && SHOW_ANIMATED_SFE_MOVIES_VIDEO  )
-                        {
-                            anim_movies.movie.pause();
-                            sf::Time targetTime =  anim_movies.movie.getPlayingOffset() - sf::seconds(VIDEO_NUMBER_SECOND_TO_JUMP) ;
-                            anim_movies.movie.setPlayingOffset( targetTime.asSeconds() < sf::seconds(0.01f).asSeconds() ? sf::seconds(0.01f) : targetTime  );
-                             // FOR AUDIO
-                            mymusic.movie.pause();
-                            targetTime =  anim_movies.movie.getPlayingOffset();
-                            mymusic.movie.setPlayingOffset( targetTime.asSeconds() < sf::seconds(0.01f).asSeconds() ? sf::seconds(0.01f) : targetTime  );
-                            //Update strokes on the screen
-                            sc.update_stroke_inside_screen(targetTime);
-                        }//else if sf::Keyboard::Left
-                        else if(event.key.code == sf::Keyboard::V ) {
-                            if (event.key.alt){
-                                selector_video->selectNextStream(sfe::Video);
-                                selector_audio->selectNextStream(sfe::Audio);
+                            if(event.key.code == sf::Keyboard::Space) { //Space = PAUSE
+                                if (anim_movies.movie.getStatus() == sfe::Playing){ //If  video is already playing, pause it
+                                    anim_movies.movie.pause();
+                                    if (mymusic.movie.getStatus() == sfe::Playing){//If  music is already playing, pause it
+                                    mymusic.movie.pause();
+                                    }
+                                }
+                                else{
+                                    anim_movies.stop_playing = true;
+                                    anim_movies.movie.play();
+                                    if ( (mymusic.movie.getStatus() == sfe::Stopped) ||  (mymusic.movie.getStatus() == sfe::Paused) ){
+                                        mymusic.movie.play();
+                                    }
+                                }
+                                IS_MUSIC_PLAYING = !IS_MUSIC_PLAYING; //Music boolean (to play or pause)
+                                
                             }
-                        }//else if
-                    }//else if ( SHOW_ANIMED_SFE_MOVIES_VIDEO )
+                            else if (event.key.code == sf::Keyboard::A ) {
+                                if (event.key.alt){selector_audio->selectNextStream(sfe::Audio);}//Cause segmentation fault
+                            }
+                            else if (event.key.code == sf::Keyboard::P ) { //Volume +
+                                if (event.key.alt){ mymusic.movie.setVolume( std::min(mymusic.movie.getVolume() + KEYPRESS_VOLUME_TO_ADD, (float)MUSIC_MAX_VOLUME));}
+                            }
+                            else if (event.key.code == sf::Keyboard::M ) { //Volume -
+                                if (event.key.alt){mymusic.movie.setVolume( std::max( mymusic.movie.getVolume() - KEYPRESS_VOLUME_TO_ADD, (float)MUSIC_MIN_VOLUME));}
+                            }
+                            else if (event.key.code == sf::Keyboard::R ) { //Reset ALL so restart again
+
+                                anim_movies.movie.stop();
+                                anim_movies.movie.fit(sf::FloatRect(0.5f*(WIDTH - anim_movies.VIDEO_INITIAL_WIDTH), 0.5f*(HEIGHT - anim_movies.VIDEO_INITIAL_HEIGHT), SUBDIVISE_SCREEN_WIDTH_FACTOR_FOR_MOVIES * anim_movies.VIDEO_INITIAL_WIDTH, SUBDIVISE_SCREEN_HEIGHT_FACTOR_FOR_MOVIES * anim_movies.VIDEO_INITIAL_HEIGHT));
+                                anim_movies.movie.play();
+
+                                mymusic.movie.stop();
+                                mymusic.movie.play();
+                            }
+                            else if(event.key.code == sf::Keyboard::F ) { // Toggle Full Screen Mode
+                                anim_movies.fullscreen = !anim_movies.fullscreen;
+                                if (anim_movies.fullscreen){sc.currentRenderWindow->create(anim_movies.desktopMode, "Fullscreen mode Activated", sf::Style::Fullscreen);}
+                                else{
+                                    sc.currentRenderWindow->create(sf::VideoMode(anim_movies.width, anim_movies.height), "sfeMovie Player",
+                                            sf::Style::Close | sf::Style::Resize);}
+                            
+                                sc.currentRenderWindow->setFramerateLimit(WINDOW_FRAME_LIMIT_60);
+                                sc.currentRenderWindow->setVerticalSyncEnabled(true);
+                                //Update timelime Postion
+                                ui->m_background.setPosition(kHorizontalMargin, sc.currentRenderWindow->getSize().y - kTimelineBackgroundHeight - kVerticalMargin);
+                                //Set video size and position
+                                anim_movies.movie.fit(0.5*(WIDTH - (float)sc.currentRenderWindow->getSize().x), 0.5*(HEIGHT - (float)sc.currentRenderWindow->getSize().y ), (float)sc.currentRenderWindow->getSize().x, (float)sc.currentRenderWindow->getSize().y);
+                                ui->applyProperties(); 
+                            }//else if 
+                            else if(event.key.code == sf::Keyboard::H ) {  ui->toggleVisible();}//Toggle HIDE/SHOW TumeLine
+                            else if(event.key.code == sf::Keyboard::I ) {  displayMediaInfo(anim_movies.movie, mymusic.movie );}//I stand for Info, so display Media Info
+                            else if(event.key.code == sf::Keyboard::S ) { //S tand for Stop
+                                //if (event.key.alt){selector_video->selectNextStream(sfe::Subtitle);}
+                                anim_movies.stop_playing = false;
+                                anim_movies.movie.stop();
+                                mymusic.movie.stop();
+                            
+                            
+                            }//else if sf::Keyboard::S
+                            else if( (event.key.code == sf::Keyboard::Right) && SHOW_ANIMATED_SFE_MOVIES_VIDEO  ) { //Forward or backward
+                                // FOR VIDEO
+                                anim_movies.movie.pause();
+                                sf::Time targetTime =  anim_movies.movie.getPlayingOffset() + sf::seconds(VIDEO_NUMBER_SECOND_TO_JUMP) ;
+                                anim_movies.movie.setPlayingOffset( targetTime.asSeconds() > anim_movies.movie.getDuration().asSeconds() ? anim_movies.movie.getDuration() : targetTime  );
+                                // FOR AUDIO
+                                mymusic.movie.pause();
+                                targetTime =  anim_movies.movie.getPlayingOffset();
+                                mymusic.movie.setPlayingOffset( targetTime.asSeconds() > mymusic.movie.getDuration().asSeconds() ? mymusic.movie.getDuration() : targetTime  );
+                                //Update strokes on the screen
+                                sc.update_stroke_inside_screen(targetTime);
+                            } //else if sf::Keyboard::Right
+                            else if ( (event.key.code == sf::Keyboard::Left) && SHOW_ANIMATED_SFE_MOVIES_VIDEO  )
+                            {
+                                anim_movies.movie.pause();
+                                sf::Time targetTime =  anim_movies.movie.getPlayingOffset() - sf::seconds(VIDEO_NUMBER_SECOND_TO_JUMP) ;
+                                anim_movies.movie.setPlayingOffset( targetTime.asSeconds() < sf::seconds(0.01f).asSeconds() ? sf::seconds(0.01f) : targetTime  );
+                                // FOR AUDIO
+                                mymusic.movie.pause();
+                                targetTime =  anim_movies.movie.getPlayingOffset();
+                                mymusic.movie.setPlayingOffset( targetTime.asSeconds() < sf::seconds(0.01f).asSeconds() ? sf::seconds(0.01f) : targetTime  );
+                                //Update strokes on the screen
+                                sc.update_stroke_inside_screen(targetTime);
+                            }//else if sf::Keyboard::Left
+                            else if(event.key.code == sf::Keyboard::V ) {
+                                if (event.key.alt){
+                                    selector_video->selectNextStream(sfe::Video);
+                                    selector_audio->selectNextStream(sfe::Audio);
+                                }
+                            }//else if
+                        }//else if ( SHOW_ANIMED_SFE_MOVIES_VIDEO )
+                    }//if (!sc.IS_IMGUI_EDITOR_WINDOW_HOVERED_OR_CLICKED[sc.currentRenderWindowNumber])
                     break;
                 case sf::Event::MouseButtonPressed:
                     //  Bouton pour chnager de video (en bas a gauche left menu)
                     cursorPos = static_cast<sf::Vector2f>(sf::Mouse::getPosition(*sc.currentRenderWindow));
 
                     /********************************************************/
-                    /* On verifie si on a clicke dans la fenetre imgui-Sfml */
+                    /* On verifie si on a clicke sur timeline, puis si on a clické  dans la fenetre imgui-Sfml */
                     /* Je traite ça ici car je ne peux pas passer ne namespace Imgui:: en parametre */
                     /* de la fonction handle (à voir                     )  */
                     /********************************************************/
-                    
                     
                     //TimeLine Management
                     if (  false == ui->isTimeLineContainerClicked(cursorPos) ){
@@ -536,12 +538,12 @@ sc.tm.leconTitle.setString(  "EQ PARAM DROITE" );
             }
             ImGui::SFML::Update(*sc.currentRenderWindow, deltaClock.restart());
             // Positionner la fenêtre à un endroit précis
-            ImGui::SetNextWindowPos(ImVec2(WIDTH/2, 20));
+            //ImGui::SetNextWindowPos(ImVec2(WIDTH/2, 20));
             //dimensionner la fenetre
             ImGui::SetNextWindowSize(ImVec2(0.45*WIDTH, 0.75*HEIGHT)); // définir la taille de la fenêtre à 800x600 pixels
             auto cpos = editor.GetCursorPosition();
-            //ImGui::Begin("Code Editor", nullptr, ImGuiWindowFlags_HorizontalScrollbar | ImGuiWindowFlags_MenuBar | ImGuiInputTextFlags_EnterReturnsTrue); //Si j'utilise cette ligne, le petit triangle qui me permet de reduire la fenetre n'apparait plus
-            ImGui::Begin("Code Editor");//, nullptr, ImGuiWindowFlags_HorizontalScrollbar | ImGuiWindowFlags_MenuBar | ImGuiInputTextFlags_EnterReturnsTrue);
+            ImGui::Begin("Code Editor", nullptr, ImGuiWindowFlags_HorizontalScrollbar | ImGuiWindowFlags_MenuBar | ImGuiInputTextFlags_EnterReturnsTrue); //Si j'utilise cette ligne, le petit triangle qui me permet de reduire la fenetre n'apparait plus
+            //ImGui::Begin("Code Editor");//, nullptr, ImGuiWindowFlags_HorizontalScrollbar | ImGuiWindowFlags_MenuBar | ImGuiInputTextFlags_EnterReturnsTrue);
         
             // Obtenir la position de la fenêtre ImGui-SFML
             //ImVec2 windowPos = ImGui::GetWindowPos();

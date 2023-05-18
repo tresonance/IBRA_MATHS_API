@@ -1,5 +1,7 @@
-#include <iostream>
+#include <stdio.h>
 int main(){
-	std::cout << "joie";
+	int num = 10;
+	printf("vous avez saisi %d\n", num);
 	return (0);
 }
+
