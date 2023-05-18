@@ -20,16 +20,23 @@ Please, do not change the geometry files name.
 ```
 ###### HOW TO RUN ?
 
-#### =|=> MANIM DIRECTORY
 ```
 Please, set these Macro used by the following class in board-ext-geometry.hpp
 
 	#define EXTERN_BACKGROUND_CHOSEN_COLOR BLACK
 	#define EXTERN_MENU_SHAPE_COLOR BLACK 
 	#define EXTERN_SCREEN_STROKE_COLOR WHITE
-
+```
 
 ```
+Please, set these Macro used by the following class in board-only.hpp
+
+#define SHOW_IMGUI_TEXT_EDITOR true
+#define IMGUI_EDITOR_CHARACTER_SIZE 1.5f //if you use 1.5f , it will increase default imgui-character size of 50%
+
+```
+
+#### =|=> MANIM DIRECTORY
 
 ```
 1- build your manim scene : 
@@ -76,7 +83,7 @@ After you've run MANIM to generate your mp4 files,
 Simply save the files inside DiskE and update
 
 if you run : 
-source run.sh MANIM_PARAMETRIC/mypython_script.py, 
+source run.sh save, 
 the script will save the mp4 file inside current DiskE directory (exemple: /Volumes/DiskE/VIDEOS-Tle-Maths-mp4/ext-geometry/parametric/plan//Equation_Cartesienne_Plan_4.mp4) and save permanently that file into a variable called VOLUME_VIDEOS_PATH (inside ~/.bashrc)
 ```
 
@@ -92,16 +99,18 @@ by inserting the suitables courses mp4 files.
 cd ~/COURSES/MY_CHANELS_GENERIC
 ```
 
-##### CREATE DIFFERENTS SYMBOLIK LINK
+##### CREATE DIFFERENTS SYMBOLIK LINK [IF THEY DON'T YET EXISTS ]
 ```
 1- To create ONLY_BOARD and SFE_SFML_LIBS_SYMLINK and libsfe_movie_bin.so symbolics link: 
+
     RUN: source run.sh symol
+
     >> This will create two links to ONLY_BOARD and with SFE_SFML_LIBS links called respectively ONLY_BOARD_SYMLINK , SFE_SFML_LIBS_SYMLINK and libsfe_movie_bin.so
 ```
 
 ```
-    Nota: Be sure the library libsfe_movie_bin.so has already been created inside SFE_SFML_LIBS. If not 
-    go to SFE_SFML_LIBS/basic_sfe and run: make -f Makefile_build_sfe_sfml_lib re
+    Nota: Be sure the library libsfe_sfml_imgui_bin.so has already been created inside SFE_SFML_LIBS. If not 
+    go to SFE_SFML_LIBS/basic_all_in_one and run: make -f Makefile_build_sfe_sfml_imgui_lib re
     >> Afer that rerun command: source run.sh symol
 ```
 
@@ -136,33 +145,7 @@ because the course mp4 file are inside /Volume/DiskE, simply mount the DiskE int
 ````
 
 ```
->> To RUN:
-```
-
-```
-1-First you need to create the three symbolic links:
->
-ln -s /Users/ibrahimatraore/COURSES/ONLY_BOARD ONLY_BOARD_SYMLINK 
->>
-ln -s /Users/ibrahimatraore/COURSES/SFE_SFML_LIBS SFE_SFML_LIBS_SYMLINK 
->>>
-ln -s /Users/ibrahimatraore/COURSES/SFE_SFML_LIBS/basic_sfe/libsfe_movie_bin.so libsfe_movie_bin.so 
-
-so RUN: source run.sh symol
-
-Note: it will delete the symbolic links and recreate news.
-``` 
-
-```
-2- Now Run
-make clean && make fclean && make
-```
-
-```
->> Or To RUN:
-
-make or make re
-```
+>> THE MENU:
 
 ```
  Shortcuts: SFE-MOVIES-MENU
@@ -200,3 +183,7 @@ https://www.zamzar.com/uploadComplete.php?session=5111fb3e3738c3a399ab6b6d77266e
 
 ###### AnimatedGIFS: code source origin:
     https://github.com/SFML/SFML/wiki/Source:-Animated-GIF
+
+
+###### Imgui-SFML: 
+	https://github.com/SFML/imgui-sfml
