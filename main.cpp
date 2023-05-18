@@ -4,6 +4,11 @@
 #include "./MY_CHANELS_GENERIC_SYMLINK/ONLY_BOARD_SYMLINK/board-gpu-kernels.hpp"
 
 
+// Dear imgui 
+#include "MY_CHANELS_GENERIC_SYMLINK/SFE_SFML_IMGUI_LIBS_SYMLINK/basic_imgui/imgui_headers/imgui-SFML.hpp"
+#include "MY_CHANELS_GENERIC_SYMLINK/SFE_SFML_IMGUI_LIBS_SYMLINK/basic_imgui/imgui_headers/imgui.hpp"
+#include "MY_CHANELS_GENERIC_SYMLINK/SFE_SFML_IMGUI_LIBS_SYMLINK/basic_text_editor/TextEditor/TextEditor.hpp"
+
 //include opencl 
 //include external 
 #ifndef  DEFAULT_OPENCL_KERNEL_INPUT_DATA_SIZE 
@@ -114,7 +119,50 @@ int main(){
     /* Update default stroke color */
     sc.currentStrokeDefaultColor[sc.bm.currentRenderWindowNumber] = SCREEN_DEFAULT_STROKE_COLOR;
 
-     //mpc::math::Screen sc2 = mpc::math::Screen( WHITE, BLACK, BLACK );
+    /* ************************************************* */
+    /*                     DEAR IMGUI                    */
+    /* ************************************************* */
+
+     // Initialisez ImGui
+    ImGui::CreateContext();
+    ImGuiContext* context = ImGui::GetCurrentContext();
+    ImGui::SetCurrentContext(context);
+    ImGui::SFML::Init(*sc.currentRenderWindow);
+     // Variables pour la saisie de texte
+    static char inputCodeFromFileBuffer[1024] = "";
+    static char inputCodeFromTexEnteredBuffer[1024] = "";
+    static bool inputTextIsActive = false;
+    static bool inputTextHasFocus = false;
+    bool isWindowCollapsed = false; // Variable pour stocker l'état de réduction de la fenêtre
+
+    std::string code_compiled_result = "";
+
+    // Load Fonts
+	// (there is a default font, this is only if you want to change it. see extra_fonts/README.txt for more details)
+	ImVec4 clear_col = ImColor(114, 144, 154);
+
+    //Result after compiled Imgui-SFML code 
+    sf::Font font;
+    font.loadFromFile("./MY_CHANELS_GENERIC_SYMLINK/ONLY_BOARD_SYMLINK/MY_FONTS/arial.ttf");
+
+    sf::Text result("abc: ", font, 16);
+    result.setPosition(100, 250);
+    result.setFillColor(sf::Color::Green);
+
+    ///////////////////////////////////////////////////////////////////////
+	// TEXT EDITOR SAMPLE
+	TextEditor editor;
+	auto lang = TextEditor::LanguageDefinition::CPlusPlus();
+
+    static const char* fileToEdit = "MY_CHANELS_GENERIC_SYMLINK/SFE_SFML_IMGUI_LIBS_SYMLINK/basic_text_editor/fakeScript/code.cpp";
+    std::ifstream t(fileToEdit);
+    if (t.good())
+    {
+        std::string str((std::istreambuf_iterator<char>(t)), std::istreambuf_iterator<char>());
+        editor.SetText(str);
+    }
+
+    //mpc::math::Screen sc2 = mpc::math::Screen( WHITE, BLACK, BLACK );
 
     /* ************************************************* */
     /*                 ANIMATED VIDEO                    */
@@ -168,6 +216,7 @@ int main(){
 
     //set argument
     sf::Clock clock;
+    sf::Clock deltaClock;
     float duration = 0;
 
     // #  SET TOP MENU TITLE (Because we cannot set it from GIT_ONLY_BOARD_GPU)   # //
@@ -188,6 +237,8 @@ sc.tm.leconTitle.setString(  "EQ PARAM DROITE" );
 
     printf("%s", menu);
     int i = -1;
+
+
     //while(sc.currentRenderWindow->isOpen() && ChildsRenderWindows[++i]->isOpen() && ChildsRenderWindows[++i]->isOpen() && ChildsRenderWindows[++i]->isOpen() && ChildsRenderWindows[++i]->isOpen()){
     while(  sc.currentRenderWindow && sc.currentRenderWindow->isOpen() ){
         
@@ -197,6 +248,7 @@ sc.tm.leconTitle.setString(  "EQ PARAM DROITE" );
         sf::Event event;
         
         while( sc.currentRenderWindow->pollEvent(event) ){
+            ImGui::SFML::ProcessEvent(event);
             switch(event.type){
                 case sf::Event::Closed:
                     sc.currentRenderWindow->close();
@@ -209,10 +261,32 @@ sc.tm.leconTitle.setString(  "EQ PARAM DROITE" );
                     break;
 
                 case sf::Event::TextEntered:
-                   //TODO : //Extern : SET THE TEXT ENTERED METHODS
-                    if ((event.text.unicode > 30 && (event.text.unicode < 128 || event.text.unicode > 159))){}
+                    // ........................................//
+                   //TODO : DEAR IMGUI TEXT ENTERED METHODS
+                   // ........................................//
+
+                   //Ceci est abandonné ça marche quand je saisi squentiellement du code sans rien oublier derriere moi
+                   //mais si j'oubli ou fait des erreurs derriere moi et que je reviens 
+                   //pour corriger, comme je saisie sequentiellement , il les ecrira a la fin de la chaine , le code ne sera pas 
+                   //Conforme;
+                    /*if ((event.text.unicode > 30 && (event.text.unicode < 128 || event.text.unicode > 159))){
+                        if ( inputTextIsActive && inputTextHasFocus){
+                            if (event.text.unicode < 128){
+                                int inputLength = strlen(inputCodeFromTexEnteredBuffer);
+                                if (inputLength < 255){
+                                    inputCodeFromTexEnteredBuffer[inputLength] = static_cast<char>(event.text.unicode);
+                                    inputCodeFromTexEnteredBuffer[inputLength + 1] = '\0';
+                                }
+                            }// vent.text.unicode < 128
+                            if (event.text.unicode == '\b' && strlen(inputCodeFromTexEnteredBuffer))
+                                inputCodeFromTexEnteredBuffer[strlen(inputCodeFromTexEnteredBuffer) - 1] = '\0';
+                           
+                        }//inputTextIsActive && inputTextHasFocus
+                    } */
                     break;
+                   
                 case sf::Event::KeyPressed:
+                    
                     if (event.key.code == sf::Keyboard::Escape){ 
                         sc.currentRenderWindow->close();
                         //childRenderWindow1.close();
@@ -222,7 +296,9 @@ sc.tm.leconTitle.setString(  "EQ PARAM DROITE" );
                         ChildsRenderWindows[3]->close();*/
                     } //Escape = close window
                     else if( event.key.code == sf::Keyboard::Backspace ){  } //TODO: for  cleaning backwaed text entered
-                    else if( event.key.code == sf::Keyboard::Return ){} //TODO: to validate text entered
+                    else if( (event.key.code == sf::Keyboard::Return) || (event.key.code == sf::Keyboard::Enter) ){
+                        if(strlen(inputCodeFromTexEnteredBuffer)){inputCodeFromTexEnteredBuffer[strlen(inputCodeFromTexEnteredBuffer)] = '\n';}
+                    } //TODO: to validate text entered
                     else if ( SHOW_ANIMATED_SFE_MOVIES_VIDEO ){ //IF we must show video
                         
                         if(event.key.code == sf::Keyboard::Space) { //Space = PAUSE
@@ -318,19 +394,33 @@ sc.tm.leconTitle.setString(  "EQ PARAM DROITE" );
                     }//else if ( SHOW_ANIMED_SFE_MOVIES_VIDEO )
                     break;
                 case sf::Event::MouseButtonPressed:
+                    //  Bouton pour chnager de video (en bas a gauche left menu)
+                    cursorPos = static_cast<sf::Vector2f>(sf::Mouse::getPosition(*sc.currentRenderWindow));
+
+                    /********************************************************/
+                    /* On verifie si on a clicke dans la fenetre imgui-Sfml */
+                    /* Je traite ça ici car je ne peux pas passer ne namespace Imgui:: en parametre */
+                    /* de la fonction handle (à voir                     )  */
+                    /********************************************************/
+                    
+                    
                     //TimeLine Management
                     if (  false == ui->isTimeLineContainerClicked(cursorPos) ){
                        
                         //  Bouton pour chnager de video (en bas a gauche left menu)
-                        cursorPos = static_cast<sf::Vector2f>(sf::Mouse::getPosition(*sc.currentRenderWindow));
+                        //cursorPos = static_cast<sf::Vector2f>(sf::Mouse::getPosition(*sc.currentRenderWindow));
 
-                        sc.handleScreenMouseButtonPressed_extern(event, cursorPos, anim_movies.movie.getPlayingOffset(), SCREEN_BACKGROUND_COLOR(EXTERN_BACKGROUND_CHOSEN_COLOR));
+                        
+                        sc.handleScreenMouseButtonPressed_extern_imgui(event, cursorPos, anim_movies.movie.getPlayingOffset(), SCREEN_BACKGROUND_COLOR(EXTERN_BACKGROUND_CHOSEN_COLOR), context);
+
+                        
                         //Movies backward forward event 
                         if(true == anim_movies.handleBackwardForwardButtonPressed(event, cursorPos) ){
                             mymusic.movie.stop();
                         }
                         //Bouton pour rendre petit ou agrandir la video (  en bas à droite right menu) 
-                        anim_movies.handleShareScreenHorizontallyVerticallydButtonPressed(event, cursorPos);
+                        //[Abandonné car je juste pas trop necessaire pour subdiviser la video mp4 verticallement ou horizontalement]
+                        //anim_movies.handleShareScreenHorizontallyVerticallydButtonPressed(event, cursorPos);
                         
                         //Change windows (while click button management)
                         //before everything, be sure you're not in full mode (because it can crash)
@@ -357,10 +447,12 @@ sc.tm.leconTitle.setString(  "EQ PARAM DROITE" );
                     } else { IS_MUSIC_PLAYING = !IS_MUSIC_PLAYING; }
                     break;
                 case sf::Event::MouseMoved:
+                    
                     cursorPos = static_cast<sf::Vector2f>(sf::Mouse::getPosition(*sc.currentRenderWindow));
+                    
                     if (  false == ui->isTimeLineContainerClicked(cursorPos) ){  
                         //sc.handleScreenMouseMoved(event, cursorPos);
-                        sc.handleScreenMouseMoved_extern(event, cursorPos, anim_movies.movie.getPlayingOffset(), SCREEN_BACKGROUND_COLOR(EXTERN_BACKGROUND_CHOSEN_COLOR));
+                        sc.handleScreenMouseMoved_extern_imgui(event, cursorPos, anim_movies.movie.getPlayingOffset(), SCREEN_BACKGROUND_COLOR(EXTERN_BACKGROUND_CHOSEN_COLOR),context);
                     }
                     else if ( SHOW_ANIMATED_SFE_MOVIES_VIDEO && sf::Mouse::isButtonPressed(sf::Mouse::Left)  ){ //Update the timeline cursor position and strokes on screen
                         int xPos = 0;
@@ -379,6 +471,7 @@ sc.tm.leconTitle.setString(  "EQ PARAM DROITE" );
                     
                     break;
                 case sf::Event::MouseButtonReleased:
+              
                     cursorPos = static_cast<sf::Vector2f>(sf::Mouse::getPosition(*sc.currentRenderWindow));
                     sc.handleScreenMouseButtonReleased_extern(event, cursorPos, anim_movies.movie.getPlayingOffset(), SCREEN_BACKGROUND_COLOR(EXTERN_BACKGROUND_CHOSEN_COLOR) );
                     //sc.handleScreenMouseButtonReleased(event, cursorPos);
@@ -395,7 +488,8 @@ sc.tm.leconTitle.setString(  "EQ PARAM DROITE" );
                             std::cout << "Volume changed to " << int(volume) << "%" << std::endl;  
                         }
                         //Update movies size (bigger/smaller size)
-                        anim_movies.share_screen_width_coef = event.mouseWheel.delta <= 0.0f ? 0.5f : 1.1f ;
+                        //[Abandonned ]
+                        /*anim_movies.share_screen_width_coef = event.mouseWheel.delta <= 0.0f ? 0.5f : 1.1f ;
                         anim_movies.share_screen_height_coef = event.mouseWheel.delta <= 0.0f ? 0.5f : 1.1f ;
 
                         float video_width = anim_movies.movie.getSize().x;
@@ -411,6 +505,7 @@ sc.tm.leconTitle.setString(  "EQ PARAM DROITE" );
                         video_height = video_height > (float)HEIGHT ? (float)HEIGHT : video_height;
                         //anim_movies.movie.pause();
                         anim_movies.movie.fit(sf::FloatRect(0.5f*(WIDTH -  std::max(video_width, 250.f)), 0.5f*(HEIGHT -   std::max(video_height, 40.f)),  anim_movies.share_screen_width_coef*video_width,   anim_movies.share_screen_width_coef*video_height ));
+                        */
                         //anim_movies.movie.play();
                  
                     }//if ( SHOW_ANIMATED_SFE_MOVIES_VIDEO
@@ -422,13 +517,155 @@ sc.tm.leconTitle.setString(  "EQ PARAM DROITE" );
                         //anim_movies.movie.fit(0, 0, sc.currentRenderWindow->getSize().x, sc.currentRenderWindow->getSize().y);
                         sc.currentRenderWindow->setView(sf::View(sf::FloatRect(0, 0, (float)sc.currentRenderWindow->getSize().x, (float)sc.currentRenderWindow->getSize().y)));
                     }
+                    // Mettez à jour la taille de la fenêtre ImGui-SFML lorsque la fenêtre SFML est redimensionnée
+                    //ImGui::SFML::UpdateWindowSize(sc.currentRenderWindow->getSize());
                     break;
                 default:
                     break;
             }// switch(event.type)
 
         }//while(window.pollEvent(event))
-       
+        
+        /* ****************************************** */
+        /*     DEBUT UPDATE    IMGUI        UPDATE       */
+        /* ****************************************** */
+        if (SHOW_IMGUI_TEXT_EDITOR){
+            if (sc.bm.previousRenderWindowNumber != sc.bm.currentRenderWindowNumber){
+                ImGui::EndFrame();
+                ImGui::SFML::Init(*sc.currentRenderWindow);
+            }
+            ImGui::SFML::Update(*sc.currentRenderWindow, deltaClock.restart());
+            // Positionner la fenêtre à un endroit précis
+            ImGui::SetNextWindowPos(ImVec2(WIDTH/2, 20));
+            //dimensionner la fenetre
+            ImGui::SetNextWindowSize(ImVec2(0.45*WIDTH, 0.75*HEIGHT)); // définir la taille de la fenêtre à 800x600 pixels
+            auto cpos = editor.GetCursorPosition();
+            //ImGui::Begin("Code Editor", nullptr, ImGuiWindowFlags_HorizontalScrollbar | ImGuiWindowFlags_MenuBar | ImGuiInputTextFlags_EnterReturnsTrue); //Si j'utilise cette ligne, le petit triangle qui me permet de reduire la fenetre n'apparait plus
+            ImGui::Begin("Code Editor");//, nullptr, ImGuiWindowFlags_HorizontalScrollbar | ImGuiWindowFlags_MenuBar | ImGuiInputTextFlags_EnterReturnsTrue);
+        
+            // Obtenir la position de la fenêtre ImGui-SFML
+            //ImVec2 windowPos = ImGui::GetWindowPos();
+
+            // Afficher la position de la fenêtre ImGui-SFML
+            //std::cout << "( "+std::to_string(windowPos.x)+std::string(" ")+std::to_string(windowPos.y)+std::string(" )");
+            if (ImGui::BeginMenuBar())
+            {
+                if (ImGui::BeginMenu("File"))
+                {
+                    if (ImGui::MenuItem("New", "Alt-N")){
+                        inputTextIsActive = !inputTextIsActive;
+                        inputTextHasFocus = true;
+                        //std::cout << "Alt ACT° "; std::cout << inputTextIsActive; std::cout << std::endl;
+                        //std::cout << "Alt FOC° "; std::cout << inputTextHasFocus; std::cout << std::endl;
+                        memset(inputCodeFromFileBuffer, 0, sizeof(inputCodeFromFileBuffer));
+                        editor.SetText(inputCodeFromFileBuffer);
+                    }
+                    if (ImGui::MenuItem("Save"))
+                    {
+                        strcpy(inputCodeFromFileBuffer ,editor.GetText().c_str());
+                        /// save text....
+                    }
+                    if (ImGui::MenuItem("code.cpp"))
+                    {
+                        std::ifstream t(fileToEdit);
+                        if (t.good())
+                        {
+                            std::string str((std::istreambuf_iterator<char>(t)), std::istreambuf_iterator<char>());
+                            editor.SetText(str);
+                        }
+                    }
+                    if (ImGui::MenuItem("Quit", "Alt-F4"))
+                        break;
+                    ImGui::EndMenu();
+                }
+
+                if (ImGui::BeginMenu("Edit"))
+                {
+                    bool ro = editor.IsReadOnly();
+                    if (ImGui::MenuItem("Read-only mode", false, &ro))
+                        editor.SetReadOnly(ro);
+                    ImGui::Separator();
+                    if (ImGui::MenuItem("Undo", "ALT-Backspace", false, !ro && editor.CanUndo()))
+                        editor.Undo();
+                    if (ImGui::MenuItem("Redo", "Ctrl-Y", false, !ro && editor.CanRedo()))
+                        editor.Redo();
+
+                    ImGui::Separator();
+
+                    if (ImGui::MenuItem("Copy", "Ctrl-C", false, editor.HasSelection()))
+                        editor.Copy();
+                    if (ImGui::MenuItem("Cut", "Ctrl-X", false, !ro && editor.HasSelection()))
+                        editor.Cut();
+                    if (ImGui::MenuItem("Delete", "Del", false, !ro && editor.HasSelection()))
+                        editor.Delete();
+                    if (ImGui::MenuItem("Paste", "Ctrl-V", false, !ro && ImGui::GetClipboardText() != nullptr))
+                        editor.Paste();
+                    
+
+                    ImGui::Separator();
+
+                    if (ImGui::MenuItem("Select all"))
+                        editor.SetSelection(TextEditor::Coordinates(), TextEditor::Coordinates(editor.GetTotalLines(), 0));
+                    ImGui::EndMenu();
+                }
+
+                if (ImGui::BeginMenu("View"))
+                {
+                    if (ImGui::MenuItem("Dark palette"))
+                        editor.SetPalette(TextEditor::GetDarkPalette());
+                    if (ImGui::MenuItem("Light palette"))
+                        editor.SetPalette(TextEditor::GetLightPalette());
+                    if (ImGui::MenuItem("Retro blue palette"))
+                        editor.SetPalette(TextEditor::GetRetroBluePalette());
+                    ImGui::EndMenu();
+                }
+
+                ImGui::SameLine();
+                if (ImGui::Button("RUN")  ) { 
+                    if (strlen(inputCodeFromFileBuffer) ){ // If the showed script is from a file 
+                        //std::cout << "inputCodeFromFileBuffer Copié: "; std::cout << inputCodeFromFileBuffer;std::cout << std::endl;
+                        code_compiled_result = get_imgui_editor_code_result(inputCodeFromFileBuffer);
+                        result.setString(code_compiled_result);
+                        memset(inputCodeFromFileBuffer, 0, sizeof(inputCodeFromFileBuffer));
+                    }
+                    else {
+                        editor.SetSelection(TextEditor::Coordinates(), TextEditor::Coordinates(editor.GetTotalLines(), 0));
+                        strcpy(inputCodeFromTexEnteredBuffer, editor.GetText().c_str());
+                        //std::cout << "inputCodeFromTexEnteredBuffer: "; std::cout << inputCodeFromTexEnteredBuffer; std::cout << std::endl;
+                        if (strlen(inputCodeFromTexEnteredBuffer)){ //if the schowed script is not from file but from TextEntered
+                            code_compiled_result = get_imgui_editor_code_result(inputCodeFromTexEnteredBuffer);
+                            result.setString(code_compiled_result);
+                            memset(inputCodeFromTexEnteredBuffer, 0, sizeof(inputCodeFromTexEnteredBuffer));
+                        }
+                    }
+                }
+
+                ImGui::SameLine();
+                if (ImGui::Button("RESET")  ) { 
+                    result.setString("");
+                }
+
+                ImGui::EndMenuBar();
+            }
+
+            ImGui::Text("%6d/%-6d %6d lines  | %s | %s | %s | %s", cpos.mLine + 1, cpos.mColumn + 1, editor.GetTotalLines(),
+            editor.IsOverwrite() ? "Ovr" : "Ins",
+            editor.CanUndo() ? "*" : " ",
+            editor.GetLanguageDefinition().mName.c_str(), fileToEdit);
+            
+            if (inputTextIsActive)
+            {
+                //ImGui::InputText("##InputText", inputCodeFromFileBuffer, sizeof(inputCodeFromFileBuffer));
+                ImGui::InputTextMultiline("##inputCodeFromTexEnteredBuffer", inputCodeFromTexEnteredBuffer, sizeof(inputCodeFromFileBuffer), ImVec2(-1, -1), ImGuiInputTextFlags_EnterReturnsTrue);
+
+                ImGui::SetKeyboardFocusHere(1);
+                inputTextHasFocus = ImGui::IsItemActive();
+            }
+            
+            editor.Render("TextEditor");
+            ImGui::EndMenu;
+            ImGui::End();
+        }//if (SHOW_IMGUI_TEXT_EDITOR)
 
         /* ****************************************** */
         /*      UPDATE     UPDATE        UPDATE       */
@@ -485,10 +722,10 @@ sc.tm.leconTitle.setString(  "EQ PARAM DROITE" );
         sc.currentRenderWindow->draw(anim_movies.button_video_backward);
 
 
-        //Draw share menu button
-        sc.currentRenderWindow->draw(anim_movies.button_video_share_screen_vertically);
-        sc.currentRenderWindow->draw(anim_movies.button_video_share_screen_horizontally);
-        
+        //Draw subdivise menu button: [This part is abandoned because i judge not so necesary to share screen]
+        /*sc.currentRenderWindow->draw(sc.bm..button_subdivise_mp4_video_vertically);
+        sc.currentRenderWindow->draw(sc.bm..button_subdivise_mp4_video_horizontally);
+        */
         
         //draw stroke
         //sc.opencl.drawAllStrokeVector(sc.currentRenderWindow);
@@ -508,11 +745,18 @@ sc.tm.leconTitle.setString(  "EQ PARAM DROITE" );
          /* ****************************************** */
         /*                                            */
         /* ****************************************** */
-        //Child Window
-
+        //Imgui editor Window
+        if ( SHOW_IMGUI_TEXT_EDITOR && (sc.bm.currentRenderWindowNumber == 0) && SHOW_ANIMATED_SFE_MOVIES_VIDEO ){
+            sc.currentRenderWindow->draw(result);
+            ImGui::SFML::Render(*sc.currentRenderWindow);
+        }
         sc.currentRenderWindow->display();
             
     }//while(sc.currentRenderWindow->isOpen())
+
+    std::cout << "\n\n---------------------------------------\n-------- FREEING  RESSOURCES ----------\n---------------------------------------\n";
+    std::cout << "Shut down imgui-SFML\n";
+    ImGui::SFML::Shutdown();
     //delete window;
     for (int i = 0; i < static_cast<int>( NUM_RENDER_WINDOWS); i++){
         if (sc.renderWindows[i])
@@ -544,5 +788,7 @@ sc.tm.leconTitle.setString(  "EQ PARAM DROITE" );
     std::cout << "Delete selector_video\n"; 
     delete selector_audio;
     std::cout << "Delete selector_audio\n"; 
+    std::cout << "--------------------------------------\n--------------------------------------\n--------------------------------------\n";
+    
     return EXIT_SUCCESS;
 }
