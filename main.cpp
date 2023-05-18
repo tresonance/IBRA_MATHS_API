@@ -128,6 +128,9 @@ int main(){
     ImGuiContext* context = ImGui::GetCurrentContext();
     ImGui::SetCurrentContext(context);
     ImGui::SFML::Init(*sc.currentRenderWindow);
+    // Augmentez la taille des caractères de 50%
+    ImGui::GetIO().FontGlobalScale = static_cast<float>(IMGUI_EDITOR_CHARACTER_SIZE);
+
      // Variables pour la saisie de texte
     static char inputCodeFromFileBuffer[1024] = "";
     static char inputCodeFromTexEnteredBuffer[1024] = "";
@@ -487,7 +490,7 @@ sc.tm.leconTitle.setString(  "EQ PARAM DROITE" );
                             volume = std::min(volume, 100.f);
                             volume = std::max(volume, 0.f);
                             mymusic.movie.setVolume(volume);
-                            std::cout << "Volume changed to " << int(volume) << "%" << std::endl;  
+                            //std::cout << "Volume changed to " << int(volume) << "%" << std::endl;  
                         }
                         //Update movies size (bigger/smaller size)
                         //[Abandonned ]
