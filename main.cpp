@@ -136,8 +136,7 @@ int main(){
     static char inputCodeFromTexEnteredBuffer[1024] = "";
     static bool inputTextIsActive = false;
     static bool inputTextHasFocus = false;
-    bool isWindowCollapsed = false; // Variable pour stocker l'état de réduction de la fenêtre
-
+   
     std::string code_compiled_result = "";
 
     // Load Fonts
@@ -747,7 +746,7 @@ sc.tm.leconTitle.setString(  "EQ PARAM DROITE" );
         sc.opencl.drawCurrentStroke(sc.currentRenderWindow); //draw stroke 
         sc.opencl.drawAllStrokeVector(sc.currentRenderWindow);
         
-         /* ****************************************** */
+        /* ****************************************** */
         /*                                            */
         /* ****************************************** */
         //Imgui editor Window
