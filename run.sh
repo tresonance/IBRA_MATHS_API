@@ -69,20 +69,20 @@ then
     return 
 fi 
 
-if [ "$1" == "down" ]; 
+if [[ "$1" == "down" ]]; 
 then 
     docker stop $my_manim_container_name > /dev/null 
     docker rm -f  $my_manim_container_name > /dev/null 
     echo -e "${ONPURPLE} Container $my_manim_container_name stopped and removed  ${RESET} \n"
     return 
-elif [ "$1" == "save" ];
+elif [[ "$1" == "save" ]];
 then 
         # Mount Volume 
         MOUNT_FILES="$(mount -t /dev/disk2s1 && ls  "/Volumes/DiskE"  )"
         if [ "$?" != 0 ];
         then 
             echo -e "${ONCOLOR_FAILED} [ERROR]: DiskE not found ${RESET} \n"
-            return 
+            exit 1
         fi 
        
         #VOLUME_VIDEOS_PATH="/Volumes/DiskE/VIDEOS-1ere-Maths-mp4/mp4_trigo"
@@ -120,15 +120,30 @@ then
             echo -e "\n${ONCOLOR_FAILED} [FAILED TO SAVE VIDEOS TO VOLUME] ${RESET}\n"
         fi
         return 
-elif [ "$1" == "build" ]; #this is specific for chemistry because it is our own created image
+elif [[ "$1" == "build" ]]; #this is specific for chemistry because it is our own created image
 then 
     echo -e "${ONBLUE} START BUILDING DOCKER CONTAINER IMAGE ${my_manim_image}  ${RESET} \n"
+    echo -e "#####################################################################\n
+    #\n\
+    #\t\t [API MATHS] Start building manim docker image \n\
+    #\n\
+    ##################################################\n"
     $(docker build -t $my_manim_image .)
+     sleep 3
     echo -e "...............Finish created New Physic docker image ............\n"
     $(docker images | grep $my_manim_image)
-    return
+    echo -e "#####################################################################\n
+    #\n\
+    #\t\t [API MATHS] Finish building manim docker image \n\
+    #\n\
+    ##################################################\n"
 elif [[ "$1" == "symol" || "$1" == "symlink_ol" ]]; #symlink_onlyboard
 then 
+    echo -e "#####################################################################\n
+    #\n\
+    #\t\t [API MATHS] Start building symbolik link  \n\
+    #\n\
+    ##################################################\n"
     $(rm -rf ./MY_CHANELS_GENERIC_SYMLINK  > /dev/null 2>&1 )
     # create new
     $(ln -s /Users/ibrahimatraore/COURSES/MY_CHANELS_GENERIC MY_CHANELS_GENERIC_SYMLINK > /dev/null 2>&1 )
@@ -141,10 +156,18 @@ then
     echo -e "${CYAN} ${result} ${RESET}\n"
     result=$(ls -lrt  | grep libsfe_sfml_imgui_bin.so)
     echo -e "${CYAN} ${result} ${RESET}\n"
-    return 
+    echo -e "#####################################################################\n
+    #\n\
+    #\t\t [API MATHS] Finish building symbolik link  \n\
+    #\n\
+    ##################################################\n"
 elif [[ "$1" == "symlib" || "$1" == "symlink_lib" ]];
 then 
-    
+    echo -e "#####################################################################\n
+    #\n\
+    #\t\t [API MATHS] Start building symbolik with SFE_SFML_IMGUI_LIBS generated library \n\
+    #\n\
+    ##################################################\n"
     $(rm -rf ./libsfe_sfml_imgui_svg_bin.so  > /dev/null 2>&1 )
     # create new
     $(ln -s /Users/ibrahimatraore/COURSES/SFE_SFML_IMGUI_LIBS/basic_all_in_one/libsfe_sfml_imgui_svg_bin.so libsfe_sfml_imgui_svg_bin.so > /dev/null 2>&1 )
@@ -153,31 +176,68 @@ then
     echo -e "${ONGREEN} libsfe_sfml_imgui_svg_bin.so@ link has been created with SFE_SFML_LIBS DIRECTORY${RESET}\n"
     result=$(ls -lrt  | grep libsfe_sfml_imgui_svg_bin.so)
     echo -e "${CYAN} ${result} ${RESET}\n"
-    return 
-elif [ "$1" == "make" ]
+    echo -e "#####################################################################\n
+    #\n\
+    #\t\t [API MATHS] End building symbolik with SFE_SFML_IMGUI_LIBS generated library \n\
+    #\n\
+    ##################################################\n"
+elif [[ "$1" == "make" ]]
 then 
-    echo " make re "
+    echo -e "#####################################################################\n
+    #\n\
+    #\t\t [API MATHS] Start running make re command \n\
+    #\n\
+    ##################################################\n"
+    echo " make re :[Please wait while files are been compiled ... ]"
     echo
      $( make re > /dev/null 2>&1)
-    return 
-elif [ "$1" == "clean" ]
+    echo -e "#####################################################################\n
+    #\n\
+    #\t\t [API MATHS] Finish running make re command \n\
+    #\n\
+    ##################################################\n"
+elif [[ "$1" == "clean" ]]
 then 
+    echo -e "#####################################################################\n
+    #\n\
+    #\t\t [API MATHS] Start cleaning all objects files \n\
+    #\n\
+    ##################################################\n"
     echo " make fclean && make clean  > /dev/null 2>&1"
     echo
-    $( make fclean && make clean  > /dev/null 2>&1)
+    make fclean && make clean  > /dev/null 2>&1
     #$(rm -rf /Users/ibrahimatraore/COURSES/GIT_ONLY_BOARD_GPU/ONLY_MATHS/ONLY_MATHS > /dev/null 2>&1)
-    return 
-elif [ "$1" == "makec" ]
+    echo -e "#####################################################################\n
+    #\n\
+    #\t\t [API MATHS] Finish cleaning all objects files \n\
+    #\n\
+    ##################################################\n"
+elif [[ "$1" == "makec" ]]
 then 
+    echo -e "#####################################################################\n
+    #\n\
+    #\t\t [API MATHS] Start running \"make clean && make fclean && make re\" command \n\
+    #\n\
+    ##################################################\n"
     #$(rm -rf /Users/ibrahimatraore/COURSES/GIT_ONLY_BOARD_GPU/ONLY_MATHS/ONLY_MATHS > /dev/null 2>&1)
     echo " make clean && make fclean && make re "
     echo
-    echo -e "\n${ONWHITE} ${ONCYAN}......... Program MATHS is running ....... ${RESET}\n"
-    $( make fclean && make clean && make re  > /dev/null 2>&1)
+    echo -e "\n${ONWHITE} ${ONCYAN}......... Program MATHS starts running [Please wait ...] ....... ${RESET}\n"
+    make fclean && make clean && make re  > /dev/null 2>&1
     
-    return 
+    echo -e "#####################################################################\n
+    #\n\
+    #\t\t [API MATHS] Finish running \"make clean && make fclean && make re\" command \n\
+    #\n\
+    ##################################################\n"
 elif [[ "$1" == *.py ]]
 then 
+    echo -e "#####################################################################\n
+    #\n\
+    #\t\t [API MATHS] Start building manim Scene image from python file \n\
+    #\n\\t\t You must chck the result inside media directory \n
+    #
+    ##################################################\n"
     # ............... Remove unexpected directory .............
      #$(rm -rf /Users/ibrahimatraore/COURSES/GIT_ONLY_BOARD_GPU/ONLY_MATHS/ONLY_MATHS > /dev/null 2>&1)
     # .............. SET THE LESSON TITLE .................... #
@@ -188,7 +248,7 @@ then
     LECON_TITLE_LINE_NUMBER=$( cat -n main.cpp | sed -n "/sc.tm.leconTitle.setString/p" | awk '{print $1}' )
     result2=$?
 
-    if [ "$result1" != 0  ];
+    if [[ "$result1" != 0  ]];
     then 
         echo -e "\033[0;31m [WARNING]: Unable to find lesson title from your python script to main.cpp  \033[0m \n"
     else
@@ -196,7 +256,7 @@ then
 
         $(sed -i -e "s/.*sc.tm.leconTitle.setString.*/sc.tm.leconTitle.setString\( ${LECON_TITLE} \);/" main.cpp )
         
-        if [ "$?" != 0  ];
+        if [[ "$?" != 0  ]];
         then
             echo -e "\033[0;31m [WARNING]: Unable to set LECON_TITLE = $LECON_TITLE  inside  main.cpp script  \033[0m \n"		
             
@@ -206,89 +266,94 @@ then
     # ......................................................... #
 fi
 
-#................. GET BACKGROUND COLOR .........................#
-BACKGROUND_CHOSEN_COLOR=$(cat ./ext-geometry.hpp | grep "#define BACKGROUND_CHOSEN_COLOR" | sed -e 's/^[[:space:]]*//' | cut -d ' ' -f3)
-echo
-if [ "$BACKGROUND_CHOSEN_COLOR" == "BLUE" ] 
-then
-    echo -e "${ONBLUE} MANIM BACKGROUND COLOR ${RESET} ${ONBLUE} $BACKGROUND_CHOSEN_COLOR ${RESET} \n"
-elif [ "$BACKGROUND_CHOSEN_COLOR" == "BLACK" ] 
-then 
-    echo -e "${ONBLACK} MANIM BACKGROUND COLOR ${RESET} ${ONBLACK} $BACKGROUND_CHOSEN_COLOR ${RESET} \n"
-elif [ "$BACKGROUND_CHOSEN_COLOR" == "WHITE" ] 
-then
-    echo -e "${ONWHITE} MANIM BACKGROUND COLOR ${RESET} ${ONWHITE} $BACKGROUND_CHOSEN_COLOR ${RESET} \n"
-elif [ "$BACKGROUND_CHOSEN_COLOR" == "RED" ] 
-then
-    echo -e "${ONRED} MANIM BACKGROUND COLOR ${RESET} ${ONRED} $BACKGROUND_CHOSEN_COLOR ${RESET} \n"
-elif [ "$BACKGROUND_CHOSEN_COLOR" == "GREEN" ] 
-then
-    echo -e "${ONGREEN} MANIM BACKGROUND COLOR ${RESET} ${ONGREEN} $BACKGROUND_CHOSEN_COLOR ${RESET} \n"
-elif [ "$BACKGROUND_CHOSEN_COLOR" == "YELLOW" ] 
-then
-    echo -e "${ONYELLOW} MANIM BACKGROUND COLOR ${RESET} ${ONYELLOW} $BACKGROUND_CHOSEN_COLOR ${RESET} \n"
-elif [ "$BACKGROUND_CHOSEN_COLOR" == "PURPLE" ] 
-then
-    echo -e "${ONPURPLE} MANIM BACKGROUND COLOR ${RESET} ${ONPURPLE} $BACKGROUND_CHOSEN_COLOR ${RESET} \n"
-elif [ "$BACKGROUND_CHOSEN_COLOR" == "CYAN" ] 
-then
-    echo -e "${ONCYAN} MANIM BACKGROUND COLOR ${RESET} ${ONCYAN} $BACKGROUND_CHOSEN_COLOR ${RESET} \n"
-fi
+case "$1" in
+    "down" | "save" | "build" | "symol" | "symlink_ol" | "symlib" | "symlib_ol" |  "make" | "clean" | "makec")
+        echo "Valid option: $1"
+        ;;
+*)
+    #................. GET BACKGROUND COLOR .........................#
+    BACKGROUND_CHOSEN_COLOR=$(cat ./ext-geometry.hpp | grep "#define BACKGROUND_CHOSEN_COLOR" | sed -e 's/^[[:space:]]*//' | cut -d ' ' -f3)
+    echo
+    if [ "$BACKGROUND_CHOSEN_COLOR" == "BLUE" ] 
+    then
+        echo -e "${ONBLUE} MANIM BACKGROUND COLOR ${RESET} ${ONBLUE} $BACKGROUND_CHOSEN_COLOR ${RESET} \n"
+    elif [ "$BACKGROUND_CHOSEN_COLOR" == "BLACK" ] 
+    then 
+        echo -e "${ONBLACK} MANIM BACKGROUND COLOR ${RESET} ${ONBLACK} $BACKGROUND_CHOSEN_COLOR ${RESET} \n"
+    elif [ "$BACKGROUND_CHOSEN_COLOR" == "WHITE" ] 
+    then
+        echo -e "${ONWHITE} MANIM BACKGROUND COLOR ${RESET} ${ONWHITE} $BACKGROUND_CHOSEN_COLOR ${RESET} \n"
+    elif [ "$BACKGROUND_CHOSEN_COLOR" == "RED" ] 
+    then
+        echo -e "${ONRED} MANIM BACKGROUND COLOR ${RESET} ${ONRED} $BACKGROUND_CHOSEN_COLOR ${RESET} \n"
+    elif [ "$BACKGROUND_CHOSEN_COLOR" == "GREEN" ] 
+    then
+        echo -e "${ONGREEN} MANIM BACKGROUND COLOR ${RESET} ${ONGREEN} $BACKGROUND_CHOSEN_COLOR ${RESET} \n"
+    elif [ "$BACKGROUND_CHOSEN_COLOR" == "YELLOW" ] 
+    then
+        echo -e "${ONYELLOW} MANIM BACKGROUND COLOR ${RESET} ${ONYELLOW} $BACKGROUND_CHOSEN_COLOR ${RESET} \n"
+    elif [ "$BACKGROUND_CHOSEN_COLOR" == "PURPLE" ] 
+    then
+        echo -e "${ONPURPLE} MANIM BACKGROUND COLOR ${RESET} ${ONPURPLE} $BACKGROUND_CHOSEN_COLOR ${RESET} \n"
+    elif [ "$BACKGROUND_CHOSEN_COLOR" == "CYAN" ] 
+    then
+        echo -e "${ONCYAN} MANIM BACKGROUND COLOR ${RESET} ${ONCYAN} $BACKGROUND_CHOSEN_COLOR ${RESET} \n"
+    fi
 
-# save python script file
-PYTHON_SCRIPT_FILE=$1
+    # save python script file
+    PYTHON_SCRIPT_FILE=$1
 
-if [ ! -f "$PYTHON_SCRIPT_FILE"  ];
-then 
-    echo -e "${ONCOLOR_FAILED} Please, Provide Python script file_name as argument ${RESET} \n"
-    return 
-fi 
+    if [ ! -f "$PYTHON_SCRIPT_FILE"  ];
+    then 
+        echo -e "${ONCOLOR_FAILED} Please, Provide Python script file_name as argument ${RESET} \n"
+        return 
+    fi 
 
-#  get the status of container
-CONTAINER_STATUS="$( docker inspect -f '{{.State.Status}}' $my_manim_container_name 2> /dev/null)"
+    #  get the status of container
+    CONTAINER_STATUS="$( docker inspect -f '{{.State.Status}}' $my_manim_container_name 2> /dev/null)"
 
-# if command failed (aka container not exist yet, so rebuilt it)
-if  [ "$?" != 0 ];
-then
-    # remove all directory
-    rm -rf _pycache__/ media/ 
-    echo -e "${ONYELLOW} CONTAINER $my_manim_container_name  not yet exist ${RESET}\n"
-    $(docker run -d -it --rm  --name $my_manim_container_name  -v "$(pwd):/manim/"  $my_manim_image 2> /dev/null )
-    # remove old ext-geometry.hpp
-    $(docker exec -it $my_manim_container_name rm manim/ext-geometry.hpp 2> /dev/null )
-    # copy new updated main (to overide and get background color from ext-geometry.hpp)
-    $(docker cp ./ext-geometry.hpp  $my_manim_container_name:/manim/ext-geometry.hpp 2> /dev/null )
-    echo -e "${ONCOLOR_SUCCESS} new CONTAINER $my_manim_container_name created and it is running ${RESET}\n"
-elif  [ "$CONTAINER_STATUS" == "running" ]; # if container exist but it is not running
-then
-    # remove the following directories from your current directory 
-    rm -rf _pycache__/ media/ 
-    echo -e "${ONYELLOW} CONTAINER $my_manim_container_name is not yet running ${RESET}\n"
-    $( docker run -d -it --rm --name $my_manim_container_name  -v "$(pwd):/manim/"  $my_manim_image 2> /dev/null )
-    # remove old ext-geometry.hpp
-    $(docker exec -it $my_manim_container_name rm manim/ext-geometry.hpp 2> /dev/null )
-    # copy new updated main
-    $(docker cp ext-geometry.hpp  $my_manim_container_name:/manim/ext-geometry.hpp 2> /dev/null)
-    echo -e "${ONCOLOR_SUCCESS} new CONTAINER $my_manim_container_name is now running ${RESET}\n"
-else 
-    # so container is running
-    echo -e "${ONCOLOR_SUCCESS} CONTAINER $my_manim_container_name is still running ${RESET}\n"
-fi
+    # if command failed (aka container not exist yet, so rebuilt it)
+    if  [ "$?" != 0 ];
+    then
+        # remove all directory
+        rm -rf _pycache__/ media/ 
+        echo -e "${ONYELLOW} CONTAINER $my_manim_container_name  not yet exist ${RESET}\n"
+        $(docker run -d -it --rm  --name $my_manim_container_name  -v "$(pwd):/manim/"  $my_manim_image 2> /dev/null )
+        # remove old ext-geometry.hpp
+        $(docker exec -it $my_manim_container_name rm manim/ext-geometry.hpp 2> /dev/null )
+        # copy new updated main (to overide and get background color from ext-geometry.hpp)
+        $(docker cp ./ext-geometry.hpp  $my_manim_container_name:/manim/ext-geometry.hpp 2> /dev/null )
+        echo -e "${ONCOLOR_SUCCESS} new CONTAINER $my_manim_container_name created and it is running ${RESET}\n"
+    elif  [ "$CONTAINER_STATUS" == "running" ]; # if container exist but it is not running
+    then
+        # remove the following directories from your current directory 
+        rm -rf _pycache__/ media/ 
+        echo -e "${ONYELLOW} CONTAINER $my_manim_container_name is not yet running ${RESET}\n"
+        $( docker run -d -it --rm --name $my_manim_container_name  -v "$(pwd):/manim/"  $my_manim_image 2> /dev/null )
+        # remove old ext-geometry.hpp
+        $(docker exec -it $my_manim_container_name rm manim/ext-geometry.hpp 2> /dev/null )
+        # copy new updated main
+        $(docker cp ext-geometry.hpp  $my_manim_container_name:/manim/ext-geometry.hpp 2> /dev/null)
+        echo -e "${ONCOLOR_SUCCESS} new CONTAINER $my_manim_container_name is now running ${RESET}\n"
+    else 
+        # so container is running
+        echo -e "${ONCOLOR_SUCCESS} CONTAINER $my_manim_container_name is still running ${RESET}\n"
+    fi
 
-# if container is now running, build video mp4 (from python script)
-#CONTAINER_STATUS="$( docker container inspect -f '{{.State.Running}}' $my_manim_container_name > /dev/null)"
+    # if container is now running, build video mp4 (from python script)
+    #CONTAINER_STATUS="$( docker container inspect -f '{{.State.Running}}' $my_manim_container_name > /dev/null)"
 
-if [ "$( docker inspect -f '{{.State.Status}}' $my_manim_container_name  2> /dev/null)" == "running" ];
-then
-    echo -e "${BLUE}Estimated time : 33m2.879s ${RESET}\n"
-    #docker exec -it --user="$(id -u):$(id -g)" $my_manim_container_name  manim "/manim/$PYTHON_SCRIPT_FILE"
-    #docker exec -it  ${my_manim_container_name} manim -p -qm --disable_caching $PYTHON_SCRIPT_FILE ChanimScene
-    
-    # check if package w3m already exists inside container
-    
-    docker exec -it  ${my_manim_container_name} manim -p -qm  $PYTHON_SCRIPT_FILE  2> /dev/null
-    echo -e "\n"
-else 
-     echo -e "${ONCOLOR_FAILED} FAILED TO RUN CONTAINER ${RESET}\n"
-fi
-
+    if [ "$( docker inspect -f '{{.State.Status}}' $my_manim_container_name  2> /dev/null)" == "running" ];
+    then
+        echo -e "${BLUE}Estimated time : 33m2.879s ${RESET}\n"
+        #docker exec -it --user="$(id -u):$(id -g)" $my_manim_container_name  manim "/manim/$PYTHON_SCRIPT_FILE"
+        #docker exec -it  ${my_manim_container_name} manim -p -qm --disable_caching $PYTHON_SCRIPT_FILE ChanimScene
+        
+        # check if package w3m already exists inside container
+        
+        docker exec -it  ${my_manim_container_name} manim -p -qm  $PYTHON_SCRIPT_FILE  2> /dev/null
+        echo -e "\n"
+    else 
+        echo -e "${ONCOLOR_FAILED} FAILED TO RUN CONTAINER ${RESET}\n"
+    fi
+esac
