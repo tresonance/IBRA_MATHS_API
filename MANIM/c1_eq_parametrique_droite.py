@@ -18,7 +18,7 @@ cmd = "cat /Users/ibrahimatraore/COURSES/ONLY_BOARD/board-ext-geometry.hpp | gre
 execution = subprocess.Popen([ cmd ], stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE, shell=True)
 output, err = execution.communicate(b"get background color")
 rc = execution.returncode 
-print("output: ", output.decod())
+print("output: ", output.decode())
 global BACKGROUND_CHOSEN_COLOR
 BACKGROUND_CHOSEN_COLOR = output.decode()
 BACKGROUND_CHOSEN_COLOR = BACKGROUND_CHOSEN_COLOR.strip()

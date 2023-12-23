@@ -19,7 +19,7 @@ main.cpp-e
 video-course-geometry
 board-gpu-bin
 delete*
-media
+MANIM/media
 ONLY_MATHS
 ONLY_PHYSICS
 ONLY_CHEMISTRY

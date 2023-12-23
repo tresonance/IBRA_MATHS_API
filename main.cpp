@@ -1,20 +1,19 @@
 //Include board 
-#include "./MY_CHANELS_GENERIC_SYMLINK/ONLY_BOARD_SYMLINK/board-only.hpp"
-#include "./MY_CHANELS_GENERIC_SYMLINK/ONLY_BOARD_SYMLINK/board-ext-geometry.hpp"
-#include "./MY_CHANELS_GENERIC_SYMLINK/ONLY_BOARD_SYMLINK/board-gpu-kernels.hpp"
+#include "ONLY_BOARD_SYMLINK/board-only.hpp"
+#include "ONLY_BOARD_SYMLINK/board-ext-geometry.hpp"
+#include "ONLY_BOARD_SYMLINK/board-gpu-kernels.hpp"
 
 
 // Dear imgui 
-#include "MY_CHANELS_GENERIC_SYMLINK/SFE_SFML_IMGUI_LIBS_SYMLINK/basic_imgui/imgui_headers/imgui-SFML.hpp"
-#include "MY_CHANELS_GENERIC_SYMLINK/SFE_SFML_IMGUI_LIBS_SYMLINK/basic_imgui/imgui_headers/imgui.hpp"
-#include "MY_CHANELS_GENERIC_SYMLINK/SFE_SFML_IMGUI_LIBS_SYMLINK/basic_text_editor/TextEditor/TextEditor.hpp"
+#include "../SFE_SFML_IMGUI_LIBS/basic_imgui/imgui_headers/imgui-SFML.hpp"
+#include "../SFE_SFML_IMGUI_LIBS/basic_imgui/imgui_headers/imgui.hpp"
+#include "../SFE_SFML_IMGUI_LIBS/basic_text_editor/TextEditor/TextEditor.hpp"
 
 //include opencl 
 //include external 
 #ifndef  DEFAULT_OPENCL_KERNEL_INPUT_DATA_SIZE 
     #define DEFAULT_OPENCL_KERNEL_INPUT_DATA_SIZE (256 * WIDTH * HEIGHT * 4) //this number must be divide by local=256
 #endif
-#include "./MY_CHANELS_GENERIC_SYMLINK/MY_OPENCL/myopencl.hpp"
 
 
 //include library 
@@ -145,7 +144,7 @@ int main(){
 
     //Result after compiled Imgui-SFML code 
     sf::Font font;
-    font.loadFromFile("./MY_CHANELS_GENERIC_SYMLINK/ONLY_BOARD_SYMLINK/MY_FONTS/arial.ttf");
+    font.loadFromFile("ONLY_BOARD_SYMLINK/MY_FONTS/arial.ttf");
 
     sf::Text result("----[Run Result]---- :\n", font, 16);
     result.setPosition(100, 250);
@@ -156,7 +155,7 @@ int main(){
 	TextEditor editor;
 	auto lang = TextEditor::LanguageDefinition::CPlusPlus();
 
-    static const char* fileToEdit = "MY_CHANELS_GENERIC_SYMLINK/SFE_SFML_IMGUI_LIBS_SYMLINK/basic_text_editor/fakeScript/code.cpp";
+    static const char* fileToEdit = "../SFE_SFML_IMGUI_LIBS/basic_text_editor/fakeScript/code.cpp";
     std::ifstream t(fileToEdit);
     if (t.good())
     {

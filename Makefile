@@ -13,22 +13,13 @@ CLEAR		=	\033[H\e[J
 # =====  ====== ====== ======= =====
 NAME		= video-course-channels-maths-bin
 # =====  ====== ====== ======= =====
-
-MY_CHANELS_GENERIC_SYMLINK=./MY_CHANELS_GENERIC_SYMLINK
+ONLY_BOARD_BASE_DIR=ONLY_BOARD_SYMLINK/
 
 # Only board to be linked 
 # Attention ne pas enlever le shash a la fin de la ligne qui suit et l'ajouter avant obj/ de la ligne suivante
 # sinon ça marche pas (je ne sais pas trop pouquoi)
-ONLY_BOARD_BASE_DIR = $(MY_CHANELS_GENERIC_SYMLINK)/ONLY_BOARD_SYMLINK/
 ONLY_BOARD_OBJ_DIR = $(ONLY_BOARD_BASE_DIR)obj/
 ONLY_BOARD_BIN = ONLY_BOARD_BIN
-
-# My Opencl dir
-# Attention ne pas enlever le shash a la fin de la ligne qui suit et l'ajouter avant obj/ de la ligne suivante
-# sinon ça marche pas (je ne sais pas trop pouquoi)
-MY_OPENCL_BASE_DIR = $(MY_CHANELS_GENERIC_SYMLINK)/MY_OPENCL/
-MY_OPENCL_OBJ_DIR = $(MY_OPENCL_BASE_DIR)obj/
-MY_OPENCL_BIN = MY_OPENCL_BIN
 
 # External base dir 
 EXT_BASE_DIR = ./
@@ -38,7 +29,7 @@ EXT_BIN = EXT_BIN
 
 # Library to be linked  
 #SFE_SFML_IMGUI_LIBS=$(COURSES_DIR)/SFE_SFML_IMGUI_LIBS
-SFE_SFML_IMGUI_LIBS=$(MY_CHANELS_GENERIC_SYMLINK)/SFE_SFML_IMGUI_LIBS_SYMLINK
+SFE_SFML_IMGUI_LIBS=../SFE_SFML_IMGUI_LIBS
 # Headers to be included
 BASIC_SFE_DIR=$(SFE_SFML_IMGUI_LIBS)/basic_sfe
 BASIC_ALL_IN_ONE_DIR=$(SFE_SFML_IMGUI_LIBS)/basic_all_in_one
@@ -93,7 +84,7 @@ $(EXT_OBJ_DIR)%.o : $(EXT_BASE_DIR)%.hpp $(MY_OPENCL_BASE_DIR)*.hpp $(ONLY_BOARD
 
 
 # executable
-$(NAME):  $(ONLY_BOARD_OBJ_DIR)board-only.o $(ONLY_BOARD_OBJ_DIR)board-ext-geometry.o  $(MY_OPENCL_OBJ_DIR)myopencl.o  $(EXT_OBJ_DIR)ext-geometry.o  $(EXT_OBJ_DIR)main.o 
+$(NAME):  $(ONLY_BOARD_OBJ_DIR)board-only.o $(ONLY_BOARD_OBJ_DIR)board-ext-geometry.o  $(EXT_OBJ_DIR)ext-geometry.o  $(EXT_OBJ_DIR)main.o 
 	
 	@echo "\n\n\033[38m ====================================================== \n\033[0m"
 	@echo "$(GREEN) MAKE ** Building the executable ** \033[0m"
@@ -102,7 +93,7 @@ $(NAME):  $(ONLY_BOARD_OBJ_DIR)board-only.o $(ONLY_BOARD_OBJ_DIR)board-ext-geome
 	@echo "$(PURPLE) \t\t\t........................\n \033[0m"
 	@echo "\033[37m ========================================================== \033[0m\n"
 	$(shell export  LD_LIBRARY_PATH=/Users/ibrahimatraore/COURSES/SFE_SFML_IMGUI_LIBS/basic_all_in_one)
-	@$(CXX) $(CXXFLAGS) -L$(BASIC_ALL_IN_ONE_DIR) -l$(SO_LIBRARY_NAME) $(LIBS) -o $(NAME) $(ONLY_BOARD_OBJ_DIR)board-only.o $(ONLY_BOARD_OBJ_DIR)board-ext-geometry.o $(MY_OPENCL_OBJ_DIR)myopencl.o  $(EXT_OBJ_DIR)ext-geometry.o  $(EXT_OBJ_DIR)main.o   && ./$(NAME) 
+	@$(CXX) $(CXXFLAGS) -L$(BASIC_ALL_IN_ONE_DIR) -l$(SO_LIBRARY_NAME) $(LIBS) -o $(NAME) $(ONLY_BOARD_OBJ_DIR)board-only.o $(ONLY_BOARD_OBJ_DIR)board-ext-geometry.o $(EXT_OBJ_DIR)ext-geometry.o  $(EXT_OBJ_DIR)main.o   && ./$(NAME) 
 	@echo ""
 
 
