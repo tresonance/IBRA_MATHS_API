@@ -34,7 +34,7 @@ class_level="Tle"
 #class_level="Tle"
 
 # set image  name
-my_manim_image="physic_image"
+my_manim_image="manim_image"
 # set container name
 my_manim_container_name="my-maths-tle-container"
 
