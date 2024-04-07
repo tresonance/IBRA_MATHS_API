@@ -5,22 +5,22 @@
 <h4 style="color:orange">Arborescence</h4>
 <div><img src="imgs/arborescence.png" /><br/>As you can see, i have symbolic link to link the created library ../SFE_SFML_IMGUI_LIBS/create_unique_library/libsfe_movie_bin.so<br/>We can notice that the rpositoy is compose of Python scipts[aka MANIM] directory, C++ scripts and Dockerfile</div>
 
-<h4 style="color:orange">Why this arborecence ?</h4>
+<h4 style="color:orange">PROCESS TO USE THIS API_MATHS</h4>
 <ol>
 <!-- ........................... -->
 <li>
-	<h4>Dockerfile</h4>
-	<span>Inside the Dockerfile, we load Manim docker image because to generate video mp4 with Manim python script, we will work inside dockr container. So make sure your docker engine has started.</span>
+	<h3>Dockerfile</h3>
+	<span>Inside the Dockerfile, we load Manim docker image because to generate video mp4 with Manim python script, we will work inside dockr container. So make sure your docker engine has started.If you already have manim docker image, skip his step</span>
 	<pre>load your docker manim image[If it does not yet exists]<br/>docker build . -t manim_image </pre>
 	<pre>REPOSITORY    TAG       IMAGE ID       CREATED          SIZE
 manim_image   latest    b4e1b47b59a2   11 seconds ago   2.24GB</pre>
 </li>
 <!-- ........................... -->
-<li><h4>MANIM directory (python scripts to build mp4 video)</h4></h4>
+<li><h3>MANIM directory (python scripts to build mp4 video)</h3></h4>
 	<ol>
-		<li style="border 1px solid">Create your manim scene. You have some example of manim  python script:intros_videos.py - c1_eq_parametique_droite.py - c2_eq_paramerique_plan.py ...</br></br>
+		<li style="border 1px solid"><h4>Create your manim scene. You have some example of manim  python script:intros_videos.py - c1_eq_parametique_droite.py - c2_eq_paramerique_plan.py ...</h4></br>
 		</li>
-		<li style="border 1px solid">  Shell Script tu run python script inde container and generate mp4 video:
+		<li style="border 1px solid"><h4>  Shell Script tu run python script inde container and generate mp4 video:</h4>
 			<pre>source run_manim_script my_manim_python_scene_file.py</pre>
 			example:<pre>source MANIM/run_manim_script.sh MANIM/c1_eq_parametrique_droite.py  OR    source run.sh MANIM_DIR/mypython_script.py </pre>
 			<div><img src="imgs/conteneur.png" /></div>
@@ -28,12 +28,12 @@ manim_image   latest    b4e1b47b59a2   11 seconds ago   2.24GB</pre>
 			<br/>The script run inside container and after i get the mp4 file with sharing volumes with the host (here host "media" directory), so i open it: <pre>open MANIM/media/videos/c1_eq_parametrique_droite/720p30/Equation_Parametrique_Line_1.mp4</pre>
 			<div><img src="imgs/mp4.png"/></div><br/>
 		</li>
-		<li style="border 1px solid">Save your mp4 files to DiskE
-			<pre>source run.sh save</pre><pre>
+		<li style="border 1px solid"><h4>Save your mp4 files to DiskE</h4>
+			<pre>source run.sh save</pre><div>
 			It will save the new generated scene, which lies inside shared directory called media 
-			(shared directory between host and docker, because here MANIM runs his script inside docker) into DiskE</pre>
+			(shared directory between host and docker, because here MANIM runs his script inside docker) into DiskE</div>
 		</li>
-		<li style="border 1px solid">LETS'S RESUME ALL POSSIBLES MENUS<br/>
+		<li style="border 1px solid"><h4>LETS'S RESUME ALL POSSIBLES MENUS</h4>
 			<ol>
 				<li>To Stop and remove manim current container[maths or physic or chemistry]Container<pre>source run.sh down</pre></li>
 				<li>To build current manim image [for maths or physic or chemistry If it is not yet done]<pre>source run.sh build</pre></li>
@@ -46,42 +46,56 @@ manim_image   latest    b4e1b47b59a2   11 seconds ago   2.24GB</pre>
 				<li>To clean and fclean with Makefile: make fclean && make clean<pre>source make clean</pre></li>
 			</ol>
 		</li>
-		<li style="border 1px solid">HOW TO INEGRATE MP4 generated video to the API ? <br/>
+		<li style="border 1px solid"><h4>HOW TO INEGRATE MP4 generated video to the API ? </h4>
 			<ol>
 				<li>DiskE Reperory where we have saved mp4 files according to topic(maths, physic,chemistry and school class level<br/>
 					<ol>
 						<li>
+							<div>
+							[Command to list repositoris with absolute path]:
+							<div>
 							<pre>
-							[Command to list repositoris with absolute path]:<br/>find "$(readlink -f .)" -maxdepth 1 -mindepth 1 -type d | grep VIDEOS
-							<pre></pre>
+							find "$(readlink -f .)" -maxdepth 1 -mindepth 1 -type d | grep VIDEOS
+							</pre>
+							<pre>
 							+> +> +> /Volumes/DiskE/INTROS_OUTROS_VIDEOS
-							<pre></pre>
+							</pre>
+							<pre>
 							+> +> +> /Volumes/DiskE/MY_CHANELS_VIDEOS_ICONS
-							<pre></pre>
+							</pre>
+							<pre>
 							+> +> +> /Volumes/DiskE/ONLINE_VIDEOS
-							<pre></pre>
+							</pre>
+							<pre>
 							+> +> +> /Volumes/DiskE/QUICTIME-PLAYER-VIDEOS
-							<pre></pre>
+							</pre>
+							<pre>
 							+> +> +> /Volumes/DiskE/VIDEOS-1ere-Chemistry-mp4 [script option "save" will save chemistry class 1ere here]
-							<pre></pre>
+							</pre>
+							<pre>
 							+> +> +> /Volumes/DiskE/VIDEOS-1ere-Maths-mp4 [script option "save" will save Maths 1ere videos here]
-							<pre></pre>
+							</pre>
+							<pre>
 							+> +> +> /Volumes/DiskE/VIDEOS-1ere-Physic-mp4 [script option "save" will save Physic 1ere videos here]
-							<pre></pre>
+							</pre>
+							<pre>
 							+> +> +> /Volumes/DiskE/VIDEOS-Intro-mp4 [script option "save" will save videos intro here]
-							<pre></pre>
+							</pre>
+							<pre>
 							+> +> +> /Volumes/DiskE/VIDEOS-Tle-Chemistry-mp4 [script option "save" Chemistry for level Tle here]
-							<pre></pre>
+							</pre>
+							<pre>
 							+> +> +> /Volumes/DiskE/VIDEOS-Tle-Maths-mp4 [script option "save" Maths for Terminal level here]
-							<pre></pre>
+							</pre>
+							<pre>
 							/+> +> +> Volumes/DiskE/VIDEOS-Tle-Physics-mp4 [script option "save" Physics for Tle here]
-							<pre></pre>
+							</pre>
+							<pre>
 							+> +> +> /Volumes/DiskE/VIDEOS_MONTAGE
 							</pre>
 						</li>
 					</ol><br/></br>
 				</li>
-				<li><pre></pre></li>
 				<li>[STEP 1] Go To ONLY_BOARD/board-ext-geometry.hpp, and set thos MACROS
 					<pre>
 						#define  MATHS_VIDEO_INDEX 0 //0:intro, 1: first viedo, 2: second video, ...5<br/>
@@ -93,19 +107,21 @@ manim_image   latest    b4e1b47b59a2   11 seconds ago   2.24GB</pre>
 					</pre>
 				</li>
 					<li>[STEP 2] mount DiskE andG o to ONLY_BOARD/board-ext-geometry.cpp and add your videos to list <pre>const char *EXT_MP4_[MATHS|PHYSIC|CHEMISTRY|PROGRAMMING]_FILES_ARRAY_FROM___BOARD_EXT_GEOMETRY_CPP[]={ }</pre>
-					<pre>You can also add your music in this array: <br/>const char *EXT_MP3_FILES_ARRAY[] =  { }</pre>
 					<img src="imgs/mp4_arrays.png"/><br/>
+					<pre>You can also add your music in this array: <br/>const char *EXT_MP3_FILES_ARRAY[] =  { }</pre>
 					<img src="imgs/mp3_arrays.png"/><br/>
 				</li>
 				<li>[STEP 3]: Go to API_MATHS/main.cpp to instanciate your media files(video and/or  music)<br/>Your media files class can have three instance, so if 
 					<ol>
 						<li>
 							You are working on maths domain(this is the default). So inside the API_MATHS/main.cpp instanciate your class
-							<pre> ext::AnimatedSFE_MOVIES anim_movies;
-		ext::AnimatedSFE_MOVIES mymusic = ext::AnimatedSFE_MOVIES(MATHS_MUSIC_INDEX);
+							<pre> ext::AnimatedSFE_MOVIES anim_movies;</pre>
+							<pre>
+							ext::AnimatedSFE_MOVIES mymusic = ext::AnimatedSFE_MOVIES(MATHS_MUSIC_INDEX);
 							</pre>Feel free to instance more han one class if you have many mp4 videos to display inside differents boards<br/>
 							so you will need to declare like:
 							<pre>ext::AnimatedSFE_MOVIES anim_movies1,anim_movies2;</pre>
+							<img src="imgs/main_movie.png" />
 						</li>
 						<li>
 							You're working on Physics, so set your media files like that
@@ -128,6 +144,9 @@ manim_image   latest    b4e1b47b59a2   11 seconds ago   2.24GB</pre>
 					</ol>
 				</li>
 			</ol>
+		</li>
+		<li>
+		<h4>How To add Images to this API ?</h4>
 		</li>
 		<li style="border 1px solid">USEFULL INFO: Paremetrage
 			<pre>Please, set these Macro used by the following class in board-ext-geometry.hpp
