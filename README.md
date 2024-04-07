@@ -1,6 +1,6 @@
 <h1 style="border:2px solid; text-align:center;color:blue">API_MATHS</h1>
 
-<h4><p style="color:orange">DESCRIPTION:</p> This is boards application for maths vido course</h4>
+<h4><p style="color:orange">DESCRIPTION:</p> This is boards application for maths video course</h4>
 
 <h4 style="color:orange">Arborescence</h4>
 <div><img src="imgs/arborescence.png" /><br/>As you can see, i have symbolic link to link the created library ../SFE_SFML_IMGUI_LIBS/create_unique_library/libsfe_movie_bin.so<br/>We can notice that the rpositoy is compose of Python scipts[aka MANIM] directory, C++ scripts and Dockerfile</div>
@@ -16,29 +16,24 @@
 manim_image   latest    b4e1b47b59a2   11 seconds ago   2.24GB</pre>
 </li>
 <!-- ........................... -->
-<li><h4>MANIM directory (python scripts to build mp4 vido)</h4></h4>
+<li><h4>MANIM directory (python scripts to build mp4 video)</h4></h4>
 	<ol>
-		<li>Create your manim scene. You have some example of manim  python script:intros_videos.py - c1_eq_parametique_droite.py - c2_eq_paramerique_plan.py ...</br></br>
+		<li style="border 1px solid">Create your manim scene. You have some example of manim  python script:intros_videos.py - c1_eq_parametique_droite.py - c2_eq_paramerique_plan.py ...</br></br>
 		</li>
-		<li>Shell Script tu run python script inde container and generate mp4 video:
+		<li style="border 1px solid">  Shell Script tu run python script inde container and generate mp4 video:
 			<pre>source run_manim_script my_manim_python_scene_file.py</pre>
 			example:<pre>source MANIM/run_manim_script.sh MANIM/c1_eq_parametrique_droite.py  OR    source run.sh MANIM_DIR/mypython_script.py </pre>
 			<div><img src="imgs/conteneur.png" /></div>
 			you can see the script has three scenes, so i choose to run the first(aka 1).
-			<br/>The script run inside container and after i get the mp4 file with sharing volumes with the host, so i open it: <pre>open MANIM/media/videos/c1_eq_parametrique_droite/720p30/Equation_Parametrique_Line_1.mp4</pre>
+			<br/>The script run inside container and after i get the mp4 file with sharing volumes with the host (here host "media" directory), so i open it: <pre>open MANIM/media/videos/c1_eq_parametrique_droite/720p30/Equation_Parametrique_Line_1.mp4</pre>
 			<div><img src="imgs/mp4.png"/></div><br/>
 		</li>
-		<li>Save your mp4 files to DiskE
+		<li style="border 1px solid">Save your mp4 files to DiskE
 			<pre>source run.sh save</pre><pre>
 			It will save the new generated scene, which lies inside shared directory called media 
-			(shared directory between host and docker, because here MANIM runs his script inside docker)
-			into DiskE and at the same time 
-			export the DiskE path (Exemple export VOLUME_VIDEOS_PHYSICS_PATH=/Volumes/DiskE/VIDEOS-Tle-Physics-mp4/dynamic/) into 
-			~/.bashrc file (because if we export simply, the variable will be lost after)
-			So, while running c++, it will load dynamically all mp4 files  from thate expoted variable.
-			No need to set manually , mp4 files names (as in old days)</pre>
+			(shared directory between host and docker, because here MANIM runs his script inside docker) into DiskE</pre>
 		</li>
-		<li>ALL POSSIBLES MENUS<br/>
+		<li style="border 1px solid">LETS'S RESUME ALL POSSIBLES MENUS<br/>
 			<ol>
 				<li>To Stop and remove manim current container[maths or physic or chemistry]Container<pre>source run.sh down</pre></li>
 				<li>To build current manim image [for maths or physic or chemistry If it is not yet done]<pre>source run.sh build</pre></li>
@@ -51,7 +46,7 @@ manim_image   latest    b4e1b47b59a2   11 seconds ago   2.24GB</pre>
 				<li>To clean and fclean with Makefile: make fclean && make clean<pre>source make clean</pre></li>
 			</ol>
 		</li>
-		<li>HOW TO INEGRATE MP4 generated video to the API ? <br/>
+		<li style="border 1px solid">HOW TO INEGRATE MP4 generated video to the API ? <br/>
 			<ol>
 				<li>DiskE Reperory where we have saved mp4 files according to topic(maths, physic,chemistry and school class level<br/>
 					<ol>
@@ -134,7 +129,7 @@ manim_image   latest    b4e1b47b59a2   11 seconds ago   2.24GB</pre>
 				</li>
 			</ol>
 		</li>
-		<li>USEFULL INFO: Paremetrage
+		<li style="border 1px solid">USEFULL INFO: Paremetrage
 			<pre>Please, set these Macro used by the following class in board-ext-geometry.hpp
 				#define EXTERN_BACKGROUND_CHOSEN_COLOR BLACK
 				#define EXTERN_MENU_SHAPE_COLOR BLACK 
