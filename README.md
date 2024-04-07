@@ -141,12 +141,30 @@ manim_image   latest    b4e1b47b59a2   11 seconds ago   2.24GB</pre>
 		ext::AnimatedSFE_MOVIES mymusic = ext::AnimatedSFE_MOVIES(MATHS_MUSIC_INDEX);</pre>Feel free to instance more han one class if you have many mp4 videos to display inside differents boards</br>so you will need to declare like:
 							<pre>ext::AnimatedSFE_MOVIES anim_movies1("programming",0),anim_movies2("programming",1);<br/>the first argument is the domain, and the second is the mp4_files index from your mp4 files array:EXT_MP4_[MATHS|PHYSIC|CHEMISTRY|PROGRAMMING]_FILES_ARRAY_FROM___BOARD_EXT_GEOMETRY_CPP[] you fill from ONLY_BOARD/board-ext-geometry.cpp</pre>
 						</li>
+						<li><div>Example: Scree_0 dsplay his video like that: </div><img src="imgs/screen0_media.png" /></li>
 					</ol>
 				</li>
 			</ol>
 		</li>
 		<li>
 		<h4>How To add Images to this API ?</h4>
+		</li>
+		<li><h4>M E N U S</h4>
+		<pre>
+		Shortcuts: SFE-MOVIES-MENU
+		.... Space - Play / pause 
+		.... S - Stop 
+		.... R - Reset 
+		.... H - Hide / show user controls and mouse cursor
+		.... F - Toggle fullscreen 
+		.... I - Log media info and current state 
+		.... Alt + V - Select next video stream 
+		.... Alt + A - Select next audio stream 
+		.... Alt + S - Select next subtitle stream 
+		.... Alt + P - Music Volume + 
+		.... Alt + M - Music Volume - 
+		.... [No Shortcut for timeline]:simply click inside and move mouse cursor
+		</pre>
 		</li>
 		<li style="border 1px solid">USEFULL INFO: Paremetrage
 			<pre>Please, set these Macro used by the following class in board-ext-geometry.hpp

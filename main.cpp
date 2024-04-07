@@ -478,8 +478,8 @@ sc.tm.leconTitle.setString(  "EQ PARAM DROITE" );
         //Draw mp4 videos only for the first video 
         if ( (sc.bm.currentRenderWindowNumber == 0) && SHOW_ANIMATED_SFE_MOVIES_VIDEO ){ //Play mp4 video only for the first scren window
             sc.currentRenderWindow->draw(anim_movies.movie);
-            sc.currentRenderWindow->draw(anim_movies.numberVideo);
-            
+            sc.currentRenderWindow->draw(anim_movies.numberVideo); //To display the video number when
+                                                                   //When w click forward and backward at the bottom
             ui->draw();
         }
     
