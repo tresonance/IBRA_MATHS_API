@@ -33,6 +33,7 @@ SFE_SFML_IMGUI_LIBS=../SFE_SFML_IMGUI_LIBS
 # Headers to be included
 BASIC_SFE_DIR=$(SFE_SFML_IMGUI_LIBS)/basic_sfe
 BASIC_ALL_IN_ONE_DIR=$(SFE_SFML_IMGUI_LIBS)/basic_all_in_one
+CREATE_UNIQ_LIBRARY_DIR=(SFE_SFML_IMGUI_LIBS)/create_unique_library
 SFE_HEADERS_DIR=$(BASIC_SFE_DIR)/sfe_headers
 SFML_HEADERS_DIR=$(BASIC_SFE_DIR)/sfml_headers
 
@@ -42,7 +43,7 @@ NO_WARNINGS_FLAGS=-Wno-deprecated -Wno-c++11-extensions -Wno-inconsistent-missin
 SFML_HEADERS_DIR=${BASIC_SFE_DIR}/sfml_headers 
 
 # SO Library Name without prefix lib and extensio .so
-SO_LIBRARY_NAME=sfe_sfml_imgui_svg_bin 
+SO_LIBRARY_NAME=sfe_movie_bin
 
 CXXFLAGS= -std=c++11 $(NO_WARNINGS_FLAGS) -I$(SFML_HEADERS_DIR) -I$(FFmpeg_HEADERS_DIR) -I$(SFE_HEADERS_DIR) -framework OpenCL 
 # ===============================
@@ -93,7 +94,7 @@ $(NAME):  $(ONLY_BOARD_OBJ_DIR)board-only.o $(ONLY_BOARD_OBJ_DIR)board-ext-geome
 	@echo "$(PURPLE) \t\t\t........................\n \033[0m"
 	@echo "\033[37m ========================================================== \033[0m\n"
 	$(shell export  LD_LIBRARY_PATH=/Users/ibrahimatraore/COURSES/SFE_SFML_IMGUI_LIBS/basic_all_in_one)
-	@$(CXX) $(CXXFLAGS) -L$(BASIC_ALL_IN_ONE_DIR) -l$(SO_LIBRARY_NAME) $(LIBS) -o $(NAME) $(ONLY_BOARD_OBJ_DIR)board-only.o $(ONLY_BOARD_OBJ_DIR)board-ext-geometry.o $(EXT_OBJ_DIR)ext-geometry.o  $(EXT_OBJ_DIR)main.o   && ./$(NAME) 
+	@$(CXX) $(CXXFLAGS) -L`pwd` -l$(SO_LIBRARY_NAME) $(LIBS) -o $(NAME) $(ONLY_BOARD_OBJ_DIR)board-only.o $(ONLY_BOARD_OBJ_DIR)board-ext-geometry.o $(EXT_OBJ_DIR)ext-geometry.o  $(EXT_OBJ_DIR)main.o   && ./$(NAME) 
 	@echo ""
 
 
