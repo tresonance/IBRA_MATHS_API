@@ -53,12 +53,12 @@ manim_image   latest    b4e1b47b59a2   11 seconds ago   2.24GB</pre>
 					<ol>
 						<li>
 							<div>
-							[Command to list repositoris with absolute path]:
+							[Command to list repositories  with absolute path]:
 							<div>
-							<pre>
+							<pre style="margin-left=0;">
 							find "$(readlink -f .)" -maxdepth 1 -mindepth 1 -type d | grep VIDEOS
 							</pre>
-							<pre>
+							<pre style="margin-left=0;">
 							+> +> +> /Volumes/DiskE/INTROS_OUTROS_VIDEOS
 							</pre>
 							<pre>

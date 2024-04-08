@@ -15,6 +15,7 @@ media/
 temp*
 Tex*
 .bash*
+*.so
 main.cpp-e
 video-course-geometry
 board-gpu-bin
