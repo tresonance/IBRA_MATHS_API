@@ -123,6 +123,10 @@ manim_image   latest    b4e1b47b59a2   11 seconds ago   2.24GB</pre>
 							so you will need to declare like:
 							<pre>ext::AnimatedSFE_MOVIES anim_movies1,anim_movies2;</pre>
 							<img src="imgs/main_movie.png" />
+							<div>Here is how to set two mp4-videos for example</div>
+							<ilmg src="imgs/anim_movies2_num1.png"  />
+							<ilmg src="imgs/anim_movies2_num2.png"  />
+							<ilmg src="imgs/anim_movies2_num3.png"  />
 						</li>
 						<li>
 							You're working on Physics, so set your media files like that
