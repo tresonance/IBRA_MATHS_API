@@ -297,41 +297,6 @@ manim_image   latest    b4e1b47b59a2   11 seconds ago   2.24GB</pre>
 ### DOCUMENTATION AND USEFULS LINKS:
 manim: https://docs.manim.community/en/stable/index.html
 
-### HOW TO RUN THIS SOTWARE
-````
--+- TEST MODE or REAL COURSE MODE (MACRO aka #define):
-
-*=> To simply test a mp4 file : 
-do not mount /Volume/DiskE, the script 
-is so intelligent to detect it
-
-*=> If you need real mode course, 
-because the course mp4 file are inside /Volume/DiskE, simply mount the DiskE into your PC
-
-------
-
-*=> NUM_RENDER_WINDOWS: the macro which indicates the number of windows to open (default is 3), this macro is inside ONLY_BOARD/board-gpu.hpp 
-````
-
-```
->> THE MENU:
-
-```
- Shortcuts: SFE-MOVIES-MENU
-	.... Space - Play / pause 
-	.... S - Stop 
-	.... R - Reset 
-	.... H - Hide / show user controls and mouse cursor
-	.... F - Toggle fullscreen 
-	.... I - Log media info and current state 
-	.... Alt + V - Select next video stream 
-	.... Alt + A - Select next audio stream 
-	.... Alt + S - Select next subtitle stream 
-	.... Alt + P - Music Volume + 
-	.... Alt + M - Music Volume - 
-    .... [No Shortcut for timeline]:simply click inside and move mouse cursor
-```
-
 ######  DES LIENS UTILS:
 ###### [Physic-Maths] https://talkingphysics.wordpress.com/2019/01/08/getting-started-animating-with-manim-and-python-3-7/
 
