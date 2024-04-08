@@ -75,7 +75,9 @@ int main(){
     
     /////////////////////////////////////////////////////////////////////////////////////
     ////////////////////////////////////// SFE_MOVIES ///////////////////////////////////////////////
-    ext::AnimatedSFE_MOVIES anim_movies;
+    ext::AnimatedSFE_MOVIES anim_movies; //First instance: Here default domain="maths and default index=0
+    ext::AnimatedSFE_MOVIES anim_movies2("maths", 8); //second instance domain="maths" and index=1
+
     ext::AnimatedSFE_MOVIES mymusic = ext::AnimatedSFE_MOVIES(MATHS_MUSIC_INDEX);
     bool IS_MUSIC_PLAYING = true;
 
@@ -124,6 +126,7 @@ int main(){
     /* ************************************************* */
     if ( SHOW_ANIMATED_SFE_MOVIES_VIDEO ){
         anim_movies.movie.fit(0.5*(WIDTH - anim_movies.width), 0.5*(HEIGHT - anim_movies.height), anim_movies.width, anim_movies.height);
+        anim_movies2.movie.fit(0.5*(WIDTH - anim_movies2.width), 0.5*(HEIGHT - anim_movies2.height), anim_movies2.width, anim_movies2.height);
         mymusic.movie.setVolume(DEFAULT_MUSIC_VOLUME);
 
         ui = new UserInterface(*sc.currentRenderWindow, anim_movies.movie);
@@ -134,6 +137,7 @@ int main(){
         //anim_movies.movie.setPlayingOffset(sf::milliseconds(1000 * (int)TIME_OFFSET_BEFORE_PLAYING_MOVIES));
         //anim_movies.movie.play(); PLD
         anim_movies.movie.play();
+        anim_movies2.movie.play();
         
         //if (PLAY_MUSIC_SFE_MOVIES_VIDEO)
             //mymusic.movie.play();
@@ -464,6 +468,10 @@ sc.tm.leconTitle.setString(  "EQ PARAM DROITE" );
             anim_movies.movie.update(); 
             //mymusic.movie.setVolume(  (float)DEFAULT_MUSIC_VOLUME - (float)DEFAULT_MUSIC_VOLUME*anim_movies.movie.getPlayingOffset().asSeconds()/anim_movies.movie.getDuration().asSeconds() );
         }
+        if ( (sc.bm.currentRenderWindowNumber == 1) && SHOW_ANIMATED_SFE_MOVIES_VIDEO ){ //update mp4 video only for the first screen window
+            anim_movies2.movie.update(); 
+            //mymusic.movie.setVolume(  (float)DEFAULT_MUSIC_VOLUME - (float)DEFAULT_MUSIC_VOLUME*anim_movies.movie.getPlayingOffset().asSeconds()/anim_movies.movie.getDuration().asSeconds() );
+        }
         if ( (sc.bm.currentRenderWindowNumber == 0) && PLAY_MUSIC_SFE_MOVIES_VIDEO && (mymusic.movie.getPlayingOffset().asSeconds() >= anim_movies.movie.getDuration().asSeconds())  ){ 
             //mymusic.movie.stop(); 
         } 
@@ -478,6 +486,13 @@ sc.tm.leconTitle.setString(  "EQ PARAM DROITE" );
         //Draw mp4 videos only for the first video 
         if ( (sc.bm.currentRenderWindowNumber == 0) && SHOW_ANIMATED_SFE_MOVIES_VIDEO ){ //Play mp4 video only for the first scren window
             sc.currentRenderWindow->draw(anim_movies.movie);
+            sc.currentRenderWindow->draw(anim_movies.numberVideo); //To display the video number when
+                                                                   //When w click forward and backward at the bottom
+            ui->draw();
+        }
+
+        if ( (sc.bm.currentRenderWindowNumber == 1) && SHOW_ANIMATED_SFE_MOVIES_VIDEO ){ //Play mp4 video only for the first scren window
+            sc.currentRenderWindow->draw(anim_movies2.movie);
             sc.currentRenderWindow->draw(anim_movies.numberVideo); //To display the video number when
                                                                    //When w click forward and backward at the bottom
             ui->draw();

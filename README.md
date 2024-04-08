@@ -1,5 +1,6 @@
 <h1 style="border:2px solid; text-align:center;color:blue">API_MATHS</h1>
-
+<div><img src="imgs/board0.png" /></div><hr /><hr />
+<div><img src="imgs/board1.png" /></div>
 <h4><p style="color:orange">DESCRIPTION:</p> This is boards application for maths video course</h4>
 
 <h4 style="color:orange">Arborescence</h4>
