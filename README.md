@@ -14,12 +14,17 @@
 	<span>Inside the Dockerfile, we load Manim docker image because to generate video mp4 with Manim python script, we will work inside dockr container. So make sure your docker engine has started.If you already have manim docker image, skip his step</span>
 	<pre>load your docker manim image[If it does not yet exists]<br/>docker build . -t manim_image </pre>
 	<pre>REPOSITORY    TAG       IMAGE ID       CREATED          SIZE
-manim_image   latest    b4e1b47b59a2   11 seconds ago   2.24GB</pre>
+manim_image   latest    b4e1b47b59a2   11 seconds ago   2.24GB</pre><br/><img src="imgs/docker_images.png"/><br/><br/>
 </li>
+<li>Create ONLY_BOARD symbolic link<br/><pre>./run.sh symb_ob</pre></li>
+
+</li>
+<li>Create Libarie libsfe_movie_bin.so (the librari of create_unique_library directory) symbolic link<br/><pre>./run.sh symlink_lib</pre><br/></li>
+<li>To run your API_CHEMISTRY<br/><pre>make re</pre></li>
 <!-- ........................... -->
 <li><h3>MANIM directory (python scripts to build mp4 video)</h3></h4>
 	<ol>
-		<li style="border 1px solid"><h4>Create your manim scene. You have some example of manim  python script:intros_videos.py - c1_eq_parametique_droite.py - c2_eq_paramerique_plan.py ...</h4></br>
+		<li style="border 1px solid"><h4>Create your manim scene. You have some example of manim  python script:intros_videos.py - c1_eq_parametique_droite.py  to generate your video-scene - c2_eq_paramerique_plan.py ...</h4></br>
 		</li>
 		<li style="border 1px solid"><h4>  Shell Script tu run python script inde container and generate mp4 video:</h4>
 			<pre>source run_manim_script my_manim_python_scene_file.py</pre>
