@@ -10,7 +10,7 @@
 <li>
 	<h4>Dockerfile</h4>
 	<span>Inside the Dockerfile, we load Manim docker image because to generate video mp4 with Manim python script, we will work inside dockr container. So make sure your docker engine has started.</span>
-	<pre>load your docker manim image[If it does not yet exists]<br/>docker build . -t manim_image </pre>
+	<pre>load your docker manim image[If it does not yet exists]<br/>docker build . -t manim_image <br/>OR<br/>source run.sh build</pre>
 	<pre>REPOSITORY    TAG       IMAGE ID       CREATED          SIZE
 manim_image   latest    b4e1b47b59a2   11 seconds ago   2.24GB</pre>
 </li>

@@ -337,9 +337,9 @@ sc.tm.leconTitle.setString(  "EQ PARAM DROITE" );
                     cursorPos = static_cast<sf::Vector2f>(sf::Mouse::getPosition(*sc.currentRenderWindow));
 
                     /********************************************************/
-                    /* On verifie si on a clicke sur timeline, puis si on a clické  dans la fenetre imgui-Sfml */
-                    /* Je traite ça ici car je ne peux pas passer ne namespace Imgui:: en parametre */
-                    /* de la fonction handle (à voir                     )  */
+                    /* On verifie si on a clicke sur timeline               */
+                    /*                                                      */
+                    /*                                                      */
                     /********************************************************/
                     
                     //TimeLine Management

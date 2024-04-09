@@ -71,7 +71,7 @@ elif [[ "$1" == *.py ]]; then
     result1=$?
     
 
-    LECON_TITLE_LINE_NUMBER=$( cat -n ../main.cpp | sed -n "/sc.tm.leconTitle.setString/p" | awk '{print $1}' )
+    LECON_TITLE_LINE_NUMBER=$( cat -n $HOME/COURSES/API_MATHS/main.cpp | sed -n "/sc.tm.leconTitle.setString/p" | awk '{print $1}' )
     result2=$?
 
     if [ "$result1" != 0  ];
@@ -94,7 +94,7 @@ fi
 
 
 #................. GET BACKGROUND COLOR .........................#
-BACKGROUND_CHOSEN_COLOR=$(cat ./geometry.hpp | grep "#define BACKGROUND_CHOSEN_COLOR" | sed -e 's/^[[:space:]]*//' | cut -d ' ' -f3)
+BACKGROUND_CHOSEN_COLOR=$(cat $HOME/COURSES/API_MATHS/ext-geometry.hpp | grep "#define BACKGROUND_CHOSEN_COLOR" | sed -e 's/^[[:space:]]*//' | cut -d ' ' -f3)
 echo
 if [[ "$BACKGROUND_CHOSEN_COLOR" == "BLUE" ]] 
 then
@@ -144,7 +144,7 @@ then
     # remove old geometry.hpp
     $(docker exec -it $my_manim_container_name rm manim/geometry.hpp 2> /dev/null )
     # copy new updated main (to overide and get background color from geometry.hpp)
-    $(docker cp ./geometry.hpp  $my_manim_container_name:/manim/geometry.hpp 2> /dev/null )
+    $(docker cp $HOME/COURSES/API_MATHS/ext-geometry.hpp  $my_manim_container_name:/manim/geometry.hpp 2> /dev/null )
     echo -e "${ONCOLOR_SUCCESS} new CONTAINER $my_manim_container_name created and it is running ${RESET}\n"
 elif  [[ "$CONTAINER_STATUS" == "running" ]]; # if container exist but it is not running
 then
