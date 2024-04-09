@@ -21,6 +21,7 @@ manim_image   latest    b4e1b47b59a2   11 seconds ago   2.24GB</pre><br/><img sr
 </li>
 <li>Create Libarie libsfe_movie_bin.so (the librari of create_unique_library directory) symbolic link<br/><pre>./run.sh symlink_lib</pre><br/></li>
 <li>To run your API_CHEMISTRY<br/><pre>make re</pre></li>
+
 <!-- ........................... -->
 <li><h3>MANIM directory (python scripts to build mp4 video)</h3></h4>
 	<ol>
