@@ -163,7 +163,7 @@ manim_image   latest    b4e1b47b59a2   11 seconds ago   2.24GB</pre><br/><img sr
 			<img src="imgs/pesanteur_hpp.png" /><br/>and developp the class method in xt-geometry.cpp like:
 			<pre>
 				mvt_chp_pesanteur::MouvementChampPesenteur::MouvementChampPesenteur(){
-				std::string volume_abs_path("/Users/ibrahimatraore/COURSES/API_PHYSICS/images/");
+				std::string volume_abs_path("/xxxxxx/xxxxxxxx/COURSES/API_PHYSICS/images/");
 				//std::string path = volume_abs_path + std::string("projection_vecteur.svg");
 				this->counter = -1; 
 				/// WINDOW: 0
